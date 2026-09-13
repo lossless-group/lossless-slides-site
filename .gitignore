@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.astro/
+.vercel/
+.env
+
+# direnv / nix-direnv cache
+.direnv/
+
+# context-v scratch — out-of-band material, never committed
+context-v/extra/

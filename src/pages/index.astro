@@ -1,0 +1,89 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+
+export const prerender = true;
+
+// The three ways a deck can be authored here, per the astro-knots blueprints
+// Slides-System-for-Astro-and-Markdown and Maintain-Embeddable-Slides.
+const formats = [
+  {
+    label: 'Markdown decks',
+    body: 'Written in plain Markdown, one slide per section, so a talk can be drafted in Obsidian and shipped with a commit.',
+  },
+  {
+    label: 'Astro decks',
+    body: 'Built from components when a presentation needs custom layouts, data visualizations, or motion.',
+  },
+  {
+    label: 'Embeddable',
+    body: 'Any deck can be dropped into an essay, a changelog, or another site, instead of living only at its own URL.',
+  },
+];
+---
+<BaseLayout>
+  <section class="max-w-6xl mx-auto px-6 pt-16 pb-8">
+    <p class="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">The Lossless Group</p>
+    <h1 class="gradient-text w-fit mb-4">Slides &amp; Presentations</h1>
+    <p class="text-xl text-muted-foreground max-w-2xl mb-8">
+      Talks, pitches, and explainers from The Lossless Group, built as code and presented in the browser.
+    </p>
+    <div class="flex flex-wrap gap-4">
+      <a href="#presentations" class="hero-btn">Browse presentations</a>
+      <a href="https://www.lossless.group" class="hero-btn">Visit lossless.group</a>
+    </div>
+  </section>
+
+  <div class="max-w-6xl mx-auto px-6 py-4"><hr class="gradient-line" /></div>
+
+  <!-- Gallery and card treatment follow mpstaton-site's newest listing surfaces
+       (/proposals, /promote): eyebrow header, bg-card/40 cards, dashed empty state. -->
+  <section id="presentations" class="max-w-6xl mx-auto px-6 pt-4 pb-8 scroll-mt-8">
+    <header class="mb-6">
+      <p class="text-xs uppercase tracking-[0.18em] text-muted-foreground">Presentations</p>
+      <h2 class="mt-2 text-3xl font-semibold tracking-tight text-foreground">The gallery</h2>
+    </header>
+    <div class="rounded-lg border border-dashed border-border p-12 text-center">
+      <p class="text-foreground mb-1">The first decks are on their way.</p>
+      <p class="text-muted-foreground">This gallery fills in as presentations are published.</p>
+    </div>
+  </section>
+
+  <section class="max-w-6xl mx-auto px-6 pt-8 pb-16">
+    <header class="mb-6">
+      <p class="text-xs uppercase tracking-[0.18em] text-muted-foreground">Formats</p>
+      <h2 class="mt-2 text-3xl font-semibold tracking-tight text-foreground">How decks are made</h2>
+    </header>
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {formats.map((format) => (
+        <article class="flex flex-col rounded-xl border border-border bg-card/40 p-7 transition hover:border-foreground/30 hover:bg-card/70">
+          <p class="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">Format</p>
+          <p class="mt-4 text-2xl font-semibold leading-snug text-foreground">{format.label}</p>
+          <p class="mt-3 flex-1 text-pretty text-sm leading-relaxed text-muted-foreground">{format.body}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.625rem 1.25rem;
+    border-radius: 0.375rem;
+    font-weight: 500;
+    border: 1px solid var(--border);
+    color: var(--foreground);
+    background: transparent;
+    position: relative;
+    transition: color 0.2s, border-color 0.2s, background 0.3s;
+  }
+  .hero-btn:hover {
+    background: var(--gradient-brand);
+    border-color: transparent;
+    color: #fff;
+  }
+  .empty-gallery {
+    background: var(--gradient-brand-subtle);
+  }
+</style>

@@ -1,0 +1,105 @@
+:root {
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-size: 16px;
+
+  /* Lossless Group brand gradient */
+  --gradient-brand: linear-gradient(112deg, #22A6B5 6%, #9138E0 24%, #D9233B 48%, #F59C49 72%);
+  --gradient-brand-text: linear-gradient(112deg, #22A6B5 6%, #9138E0 24%, #D9233B 48%, #F59C49 72%);
+  --gradient-brand-subtle: linear-gradient(135deg, rgba(34,166,181,0.15) 0%, rgba(145,56,224,0.1) 30%, rgba(217,35,59,0.1) 60%, rgba(245,156,73,0.08) 100%);
+
+  /* Lossless brand stops */
+  --brand-cyan: #22A6B5;
+  --brand-purple: #9138E0;
+  --brand-crimson: #D9233B;
+  --brand-orange: #F59C49;
+  --brand-lime: #BFEF47;
+  --brand-aqua: #04E5E5;
+
+  /* Light mode */
+  --background: #E8F3F5;
+  --foreground: #1A0D33;
+  --card: #ffffff;
+  --card-foreground: #1A0D33;
+  --primary: #9138E0;
+  --primary-foreground: #ffffff;
+  --secondary: #22A6B5;
+  --secondary-foreground: #ffffff;
+  --accent: #D9233B;
+  --accent-foreground: #ffffff;
+  --muted: #D9F1F5;
+  --muted-foreground: #5E1B5E;
+  --border: rgba(145,56,224,0.15);
+  --input: rgba(145,56,224,0.12);
+  --ring: #9138E0;
+  --radius: 0.5rem;
+
+  /* Callout semantic tokens (Tier 2) — each points to a brand stop in Tier 1.
+   * Light-mode defaults: lime/aqua are deepened via color-mix against --foreground
+   * so they read on the bone background instead of disappearing. */
+  --callout-note:      #6B7280;
+  --callout-info:      color-mix(in srgb, var(--brand-cyan) 70%, var(--foreground));
+  --callout-tip:       color-mix(in srgb, var(--brand-lime) 38%, var(--foreground));
+  --callout-success:   color-mix(in srgb, var(--brand-lime) 38%, var(--foreground));
+  --callout-warning:   color-mix(in srgb, var(--brand-orange) 65%, var(--foreground));
+  --callout-danger:    var(--brand-crimson);
+  --callout-quote:     var(--brand-purple);
+  --callout-example:   var(--brand-purple);
+  --callout-question:  color-mix(in srgb, var(--brand-aqua) 50%, var(--foreground));
+  --callout-important: var(--brand-crimson);
+  --callout-llm-response: var(--brand-purple);
+  --callout-excerpt:   color-mix(in srgb, var(--brand-purple) 25%, var(--foreground));
+
+  /* Mode-loudness tokens — used by the .ak-callout--info hero variant. */
+  --fx-glow-opacity: 0.08;
+  --fx-glow-spread: 12px;
+
+  /* Reader-prose link color (Tier 2 semantic token). Used by .prose a so
+   * the markdown renderer can re-theme links per mode without touching
+   * the component CSS. Light mode: keep brand-purple primary — high
+   * contrast on the bone background, matches the existing chrome. */
+  --prose-link: var(--primary);
+  --prose-link-hover: color-mix(in srgb, var(--primary) 70%, var(--foreground));
+}
+
+[data-theme='dark'] {
+  --background: #080005;
+  --foreground: #D9F1F5;
+  --card: #1A0F2B;
+  --card-foreground: #E8F3F5;
+  --primary: #9138E0;
+  --primary-foreground: #ffffff;
+  --secondary: #22A6B5;
+  --secondary-foreground: #ffffff;
+  --accent: #F59C49;
+  --accent-foreground: #1A0D33;
+  --muted: #1A2940;
+  --muted-foreground: #A8D9E8;
+  --border: rgba(145,56,224,0.25);
+  --input: rgba(145,56,224,0.2);
+  --ring: #9138E0;
+
+  /* Dark-mode callout overrides — loud accents gently desaturated against
+   * --card so they don't burn at full saturation on the deep purple bg. */
+  --callout-note:      #94A3B8;
+  --callout-info:      var(--brand-aqua);
+  --callout-tip:       color-mix(in srgb, var(--brand-lime) 80%, var(--card));
+  --callout-success:   color-mix(in srgb, var(--brand-lime) 80%, var(--card));
+  --callout-warning:   var(--brand-orange);
+  --callout-danger:    color-mix(in srgb, var(--brand-crimson) 82%, var(--card));
+  --callout-quote:     color-mix(in srgb, var(--brand-purple) 75%, var(--foreground));
+  --callout-example:   color-mix(in srgb, var(--brand-purple) 75%, var(--foreground));
+  --callout-question:  var(--brand-aqua);
+  --callout-important: color-mix(in srgb, var(--brand-crimson) 82%, var(--card));
+  --callout-llm-response: color-mix(in srgb, var(--brand-purple) 70%, var(--brand-aqua));
+  --callout-excerpt:   #94A3B8;
+
+  --fx-glow-opacity: 0.22;
+  --fx-glow-spread: 24px;
+
+  /* Dark-mode prose links: brand-aqua. Brighter than brand-cyan (closer
+   * to neon), and intentionally consistent with the dark-mode info /
+   * question callout accents — reader's attention layer (links +
+   * informational callouts) reads as one chromatic family. */
+  --prose-link: var(--brand-aqua);
+  --prose-link-hover: color-mix(in srgb, var(--brand-aqua) 80%, white);
+}

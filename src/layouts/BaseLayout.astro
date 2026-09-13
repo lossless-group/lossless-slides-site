@@ -1,0 +1,61 @@
+---
+import '@styles/globals.css';
+import brand from '@brand';
+import { SITE_SEO } from '@/config/seo';
+import Header from '@components/basics/Header.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** Share image, absolute or site-relative. Omitted tags fall back to the site default. */
+  image?: string;
+  /** Internal reference pages (design system, brand kit) opt out of search indexing. */
+  noindex?: boolean;
+}
+
+const {
+  title = SITE_SEO.defaultTitle,
+  description = SITE_SEO.defaultDescription,
+  image = SITE_SEO.defaultImage,
+  noindex = false,
+} = Astro.props;
+const SITE_MODE = import.meta.env.SITE_MODE ?? 'dark';
+
+const origin = Astro.site ?? Astro.url.origin;
+const canonical = new URL(Astro.url.pathname, origin).toString();
+const imageUrl = image ? new URL(image, origin).toString() : undefined;
+---
+<html lang="en" data-theme={SITE_MODE} style={`--primary:${brand.colors.primary};--secondary:${brand.colors.secondary};--accent:${brand.colors.accent};`}>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href={brand.assets.favicon} />
+    <link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+    <link rel="canonical" href={canonical} />
+    <meta name="viewport" content="width=device-width" />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <meta name="generator" content={Astro.generator} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <meta name="description" content={description} />
+    <meta property="og:site_name" content={SITE_SEO.siteName} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    {imageUrl && <meta property="og:image" content={imageUrl} />}
+    <meta name="twitter:card" content={imageUrl ? 'summary_large_image' : 'summary'} />
+    <title>{title}</title>
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <Header />
+    <main class="flex-1">
+      <slot />
+    </main>
+    <footer class="border-t border-border px-6 py-8">
+      <div class="max-w-6xl mx-auto text-center text-muted-foreground text-sm">
+        &copy; {new Date().getFullYear()} The Lossless Group. All rights reserved.
+      </div>
+    </footer>
+  </body>
+</html>
