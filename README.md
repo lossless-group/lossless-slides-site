@@ -40,6 +40,7 @@ Happy Hacking. If you want to collaborate or have questions, get in touch.
 
 - [Where it stands today](#where-it-stands-today)
 - [Authoring and viewing](#authoring-and-viewing)
+- [Markdown, charts, and animation](#markdown-charts-and-animation)
 - [Prior art](#prior-art)
 - [Implementation Status](#implementation-status)
 - [Major Dependencies](#major-dependencies)
@@ -84,6 +85,23 @@ Every approach inherits the site's theme and mode, so a deck looks like it belon
 
 ***
 
+# Markdown, charts, and animation
+
+Markdown presentations don't have to stay plain. We will import [Lossless Flavored Markdown](https://jsr.io/@lossless-group/lfm) (`@lossless-group/lfm`), our shared extended-markdown package. LFM allows for more advanced use of Markdown-based presentations by triggering and rendering styled Astro or web components, so a deck written as text can still carry designed layouts, callouts, and embeds.
+
+Two visualization libraries will be included in LFM, and will also be used independently in Astro and Svelte presentations:
+
+| Library | Reach for it when |
+|---|---|
+| **[Vega-Lite](https://vega.github.io/vega-lite/)** | Charts, where SVG or HTML/CSS is not appropriate or accurate enough |
+| **[D3.js](https://d3js.org)** | Cool animations |
+
+Other libraries may be included if they serve a purpose, though we try to stay consistent and only add dependencies when true need persists.
+
+> **Status:** planned. LFM's current release (0.6.0) covers GitHub-flavored Markdown, directives, callouts, and citations. Vega-Lite and D3 are not part of it yet, and none of the three is installed in this site so far.
+
+***
+
 # Prior art
 
 This site gathers patterns that already work elsewhere. None of them is ported yet.
@@ -95,6 +113,7 @@ This site gathers patterns that already work elsewhere. None of them is ported y
 | Deck registries, markdown decks, and gallery preview cards | `astro-knots/sites/hypernova-site` |
 | Gated, two-surface deck workspace | `astro-knots/sites/calmstorm-decks` |
 | Gated materials behind a polite access code, and the newest listing cards | `astro-knots/sites/mpstaton-site` (`/promote`, `/proposals`) |
+| Extended markdown rendering | [`@lossless-group/lfm`](https://jsr.io/@lossless-group/lfm), rendered through `mpstaton-site` |
 
 ***
 
@@ -118,6 +137,11 @@ This site gathers patterns that already work elsewhere. None of them is ported y
 - [ ] **Tiered gated access** — public, code-gated, and confidential presentations
 - [ ] **Share images per presentation** — `coverImage` / `shareImage` fallbacks
 
+### Markdown, charts, and animation
+- [ ] **LFM rendering** — `@lossless-group/lfm` triggering styled Astro or web components in Markdown presentations
+- [ ] **Vega-Lite charts** — in LFM and on their own
+- [ ] **D3 animations** — in LFM and on their own
+
 ### Site hygiene
 - [ ] **`/brand-kit` and `/design-system` pages** — required on every Astro Knots site
 - [ ] **`/llms.txt` and `/llms-full.txt`**
@@ -128,7 +152,7 @@ This site gathers patterns that already work elsewhere. None of them is ported y
 
 # Major Dependencies
 
-Every dependency is on its latest release as of 2026-09-13.
+Every installed dependency is on its latest release as of 2026-09-13.
 
 ### Runtime
 - **Astro** — v7.3.2 — server output via `@astrojs/vercel`
@@ -138,6 +162,12 @@ Every dependency is on its latest release as of 2026-09-13.
 ### Build and styling
 - **Tailwind CSS** — v4.3.3 — through `@tailwindcss/vite`
 - **Svelte** — v5.57.0 — with `@astrojs/svelte` v9.0.1, for interactive presentations
+
+### Planned
+Added when the first presentation needs them, not before.
+- **@lossless-group/lfm** — from JSR (v0.6.0 is current) — extended markdown that renders Astro or web components
+- **Vega-Lite** — charts where SVG or HTML/CSS is not accurate enough
+- **D3.js** — animations
 
 ### Tooling
 - **Nix** — flake devshell supplying the toolchain (see [Getting Started](#getting-started))
@@ -251,6 +281,8 @@ Vercel should watch this repo directly, not the parent `astro-knots` repo, so th
 
 - [Astro Documentation](https://docs.astro.build)
 - [Tailwind CSS v4](https://tailwindcss.com)
+- [@lossless-group/lfm on JSR](https://jsr.io/@lossless-group/lfm) — Lossless Flavored Markdown
+- [Vega-Lite](https://vega.github.io/vega-lite/) and [D3.js](https://d3js.org)
 - [context-vigilance-kit](https://github.com/lossless-group/context-vigilance-kit) — the context-v conventions this site follows
 - [dididecks-ai](https://github.com/lossless-group/dididecks-ai) — play and scroll mode viewers, agent-based deck authoring
 - Parent repo: `astro-knots/CLAUDE.md` — philosophy and cross-site patterns
