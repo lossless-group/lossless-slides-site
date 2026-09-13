@@ -18,10 +18,29 @@
   </span>
 </p>
 
+Lossless Slides is a successor to prior art and working codebases across many projects. It will build on and codify patterns that enable dynamic, theme- and mode-consistent presentations served from their destination URL. Presentations can be made with extreme simplicity (Markdown), polished UI (Astro or HTML/CSS), or interactive rendering (Svelte), depending on the requirements for authorship and the demands of the audience and presentation.
+
+After trying [Reveal.js](https://revealjs.com) and [Slidev](https://sli.dev), we realized we can easily "roll our own" slides system to our liking using harness engineering techniques. Our conventions are well covered (but scattered) in context-v files ([context-vigilance-kit](https://github.com/lossless-group/context-vigilance-kit)) and across several production [astro-knots](https://github.com/lossless-group/astro-knots) sites. Significant "play" and "scroll" mode viewers have been nearly perfected in [dididecks-ai](https://github.com/lossless-group/dididecks-ai), though Dididecks is primarily about agent-based authoring and design iterations.
+
+Lossless Slides will take the mantle of the latest in our patterns for:
+
+- a list or gallery of many presentations,
+- play and scroll modes for presentation displays, and
+- balancing the need for confidentiality in some presentations with ease of access, through a tiered gated auth system.
+
+All of this has prior art, and we look forward to bringing it together in an elegant way.
+
+This effort is part of "decoupling" as a strategy for refactoring, redesigning, and overhauling the core Lossless Group site ([lossless.group](https://lossless.group)). We have already decoupled the changelog, and are almost done with the toolkit. Slides are next on the list, primarily because we have some upcoming presentations we want to nail!
+
+Happy Hacking. If you want to collaborate or have questions, get in touch.
+
+*Michael Staton and the Lossless crew.*
+
 ## Table of Contents
 
-- [What this site does](#what-this-site-does)
-- [Deck formats](#deck-formats)
+- [Where it stands today](#where-it-stands-today)
+- [Authoring and viewing](#authoring-and-viewing)
+- [Prior art](#prior-art)
 - [Implementation Status](#implementation-status)
 - [Major Dependencies](#major-dependencies)
 - [Project Structure](#project-structure)
@@ -32,29 +51,50 @@
 
 ***
 
-# What this site does
+# Where it stands today
 
-This is where The Lossless Group's talks, pitches, and explainers live: as pages you open in a browser, share with a link, and eventually embed in other pages.
+**Today** the site is a landing page carrying the Lossless look — the dark ground, the cyan-to-orange brand gradient, Inter, and the Lossless mark — with an empty presentations gallery waiting for its first decks.
 
-**Today** it is a landing page carrying the Lossless look — the dark ground, the cyan-to-orange brand gradient, Inter, and the Lossless mark — with an empty presentations gallery waiting for its first decks.
+**Next** is the gallery itself, then the play and scroll viewers that present each deck. See [Implementation Status](#implementation-status) for what exists and what doesn't.
 
-**Next** is the gallery itself and the routes that present each deck. See [Implementation Status](#implementation-status) for what exists and what doesn't.
-
-The look is inherited, deliberately. [lossless.group](https://www.lossless.group) came first, `mpstaton-site` refined it, and this site starts from `mpstaton-site`'s config, stylesheets, and brand assets, because that is where the newest version lives.
+The look is inherited, deliberately. [lossless.group](https://lossless.group) came first, `mpstaton-site` refined it, and this site starts from `mpstaton-site`'s config, stylesheets, and brand assets, because that is where the newest version lives.
 
 ***
 
-# Deck formats
+# Authoring and viewing
 
-Three ways a deck will be authored here, following the astro-knots blueprints:
+### Three ways to author a presentation
 
-| Format | What it is | Blueprint |
+| Approach | Reach for it when | Built with |
 |---|---|---|
-| **Markdown decks** | Plain Markdown, one slide per section, drafted in Obsidian and shipped with a commit | `Slides-System-for-Astro-and-Markdown` |
-| **Astro decks** | Component-built presentations for custom layouts, data visualizations, or motion | `Slides-System-for-Astro-and-Markdown` |
-| **Embeddable** | Any deck dropped into an essay, a changelog, or another site | `Maintain-Embeddable-Slides` |
+| **Extreme simplicity** | The words carry the talk and it has to be drafted fast | Markdown |
+| **Polished UI** | The presentation needs custom layouts and a designed finish | Astro or HTML/CSS |
+| **Interactive rendering** | The audience should explore, not just watch | Svelte |
 
-The reference implementation for all three is `astro-knots/sites/hypernova-site` (deck registries, markdown decks, preview cards, and the Reveal.js wrapper). None of it is ported yet.
+Every approach inherits the site's theme and mode, so a deck looks like it belongs wherever it is opened.
+
+### Ways to view and share
+
+| Surface | What it does |
+|---|---|
+| **Gallery** | Lists many presentations in one place |
+| **Play mode** | Presents a deck one slide at a time |
+| **Scroll mode** | Presents a deck as a continuous, scrollable page |
+| **Tiered gated access** | Keeps confidential decks behind a code while public decks stay one click away |
+
+***
+
+# Prior art
+
+This site gathers patterns that already work elsewhere. None of them is ported yet.
+
+| Pattern | Where it lives today |
+|---|---|
+| Conventions, blueprints, and reminders | [context-vigilance-kit](https://github.com/lossless-group/context-vigilance-kit) and `astro-knots/context-v/` |
+| Play and scroll mode viewers | [dididecks-ai](https://github.com/lossless-group/dididecks-ai) |
+| Deck registries, markdown decks, and gallery preview cards | `astro-knots/sites/hypernova-site` |
+| Gated, two-surface deck workspace | `astro-knots/sites/calmstorm-decks` |
+| Gated materials behind a polite access code, and the newest listing cards | `astro-knots/sites/mpstaton-site` (`/promote`, `/proposals`) |
 
 ***
 
@@ -69,11 +109,14 @@ The reference implementation for all three is `astro-knots/sites/hypernova-site`
 - [x] **Nix devshell** — node, pnpm, bun, deno from lossless-monorepo's `js` aspect
 
 ### Presentations
-- [ ] **Gallery** — preview cards listing every deck
-- [ ] **Markdown decks** — `src/content/slides/` collection and presentation route
-- [ ] **Astro decks** — component deck registry and presentation route
-- [ ] **Embeds** — an embed route and `:::slides` directive
-- [ ] **Share images per deck** — `coverImage` / `shareImage` fallbacks
+- [ ] **Gallery** — preview cards listing every presentation
+- [ ] **Markdown presentations**
+- [ ] **Astro / HTML-CSS presentations**
+- [ ] **Svelte interactive presentations**
+- [ ] **Play mode viewer**
+- [ ] **Scroll mode viewer**
+- [ ] **Tiered gated access** — public, code-gated, and confidential presentations
+- [ ] **Share images per presentation** — `coverImage` / `shareImage` fallbacks
 
 ### Site hygiene
 - [ ] **`/brand-kit` and `/design-system` pages** — required on every Astro Knots site
@@ -94,7 +137,7 @@ Every dependency is on its latest release as of 2026-09-13.
 
 ### Build and styling
 - **Tailwind CSS** — v4.3.3 — through `@tailwindcss/vite`
-- **Svelte** — v5.57.0 — with `@astrojs/svelte` v9.0.1, for interactive islands when a deck needs them
+- **Svelte** — v5.57.0 — with `@astrojs/svelte` v9.0.1, for interactive presentations
 
 ### Tooling
 - **Nix** — flake devshell supplying the toolchain (see [Getting Started](#getting-started))
@@ -208,9 +251,12 @@ Vercel should watch this repo directly, not the parent `astro-knots` repo, so th
 
 - [Astro Documentation](https://docs.astro.build)
 - [Tailwind CSS v4](https://tailwindcss.com)
+- [context-vigilance-kit](https://github.com/lossless-group/context-vigilance-kit) — the context-v conventions this site follows
+- [dididecks-ai](https://github.com/lossless-group/dididecks-ai) — play and scroll mode viewers, agent-based deck authoring
 - Parent repo: `astro-knots/CLAUDE.md` — philosophy and cross-site patterns
 - Slides system: `astro-knots/context-v/blueprints/Slides-System-for-Astro-and-Markdown.md`
 - Embeddable slides: `astro-knots/context-v/blueprints/Maintain-Embeddable-Slides.md`
+- Fundraise deck workspace: `astro-knots/context-v/blueprints/Build-a-Fundraise-Deck-Workspace.md`
 - Styles architecture: `astro-knots/context-v/blueprints/Styles-Architecture-Blueprint.md`
 - Devshell aspects: `lossless-monorepo/flake-modules/` and `lossless-monorepo/templates/project/`
 
