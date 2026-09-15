@@ -1,0 +1,51 @@
+---
+/**
+ * Deck v1 · "Field notes" voice. Generated in one pass from
+ * src/content/presentations/ai-agents-human-collaboration/outline.md.
+ * Slides live in src/layouts/sections/ai-agents-human-collaboration/v1/.
+ * A new version gets its own folder and page, never an edit of this one.
+ */
+import DeckLayout from '@layouts/DeckLayout.astro';
+import PageDeck from '@layouts/PageDeck.astro';
+import DeckChrome from '@components/deck/DeckChrome.astro';
+import { getDeckContext } from '@lib/decks';
+
+import S01Cover from '@layouts/sections/ai-agents-human-collaboration/v1/S01-Cover.astro';
+import S02Punched from '@layouts/sections/ai-agents-human-collaboration/v1/S02-Punched.astro';
+import S03Paradigm from '@layouts/sections/ai-agents-human-collaboration/v1/S03-Paradigm.astro';
+import S04GroundMoved from '@layouts/sections/ai-agents-human-collaboration/v1/S04-Ground-Moved.astro';
+import S05Idealism from '@layouts/sections/ai-agents-human-collaboration/v1/S05-Idealism.astro';
+import S06Numbers from '@layouts/sections/ai-agents-human-collaboration/v1/S06-Numbers.astro';
+import S07VC from '@layouts/sections/ai-agents-human-collaboration/v1/S07-VC.astro';
+import S08Studies from '@layouts/sections/ai-agents-human-collaboration/v1/S08-Studies.astro';
+import S09Reliable from '@layouts/sections/ai-agents-human-collaboration/v1/S09-Reliable.astro';
+import S10AugmentIt from '@layouts/sections/ai-agents-human-collaboration/v1/S10-Augment-It.astro';
+import S11HarnessRecommendations from '@layouts/sections/ai-agents-human-collaboration/v1/S11-Harness-Recommendations.astro';
+import S12CultureRecommendations from '@layouts/sections/ai-agents-human-collaboration/v1/S12-Culture-Recommendations.astro';
+import S13Close from '@layouts/sections/ai-agents-human-collaboration/v1/S13-Close.astro';
+
+export const prerender = true;
+
+const context = getDeckContext(Astro.url.pathname);
+if (!context) throw new Error(`No deck registered for ${Astro.url.pathname}`);
+const { deck } = context;
+---
+
+<DeckLayout title={`${deck.title} · ${deck.subtitle}`} description={deck.summary} noindex>
+  <PageDeck label={deck.title}>
+    <S01Cover />
+    <S02Punched />
+    <S03Paradigm />
+    <S04GroundMoved />
+    <S05Idealism />
+    <S06Numbers />
+    <S07VC />
+    <S08Studies />
+    <S09Reliable />
+    <S10AugmentIt />
+    <S11HarnessRecommendations />
+    <S12CultureRecommendations />
+    <S13Close />
+  </PageDeck>
+  <DeckChrome context={context} />
+</DeckLayout>

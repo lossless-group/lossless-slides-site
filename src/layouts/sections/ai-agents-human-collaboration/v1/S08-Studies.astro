@@ -1,0 +1,40 @@
+---
+import SlideFolio from '@components/deck/SlideFolio.astro';
+
+const studies = [
+  { repo: 'study-agent-harnesses', libraries: ['opencode', 'goose', 'aider', 'OpenHands', 'modelcontextprotocol/python-sdk', 'continue', 'autogen', 'cline', 'codex', 'earendil-works/pi'] },
+  { repo: 'study-content-engines', libraries: ['astro-big-doc', 'content-structure', 'galaxy', 'mdBook'] },
+  { repo: 'study-conversational-ui-and-native-shells', libraries: ['Kaas', 'openagent', 'Dive', '5ire', 'anything-llm', 'routa', 'open-vibe', 'LibreChat', 'onyx', 'portaljs'] },
+  { repo: 'study-data-analytics-specifications-and-standards', libraries: ['ggsql', 'parquet-format', 'datapackage', 'vega-lite', 'arrow', 'observablehq/plot'] },
+  { repo: 'study-frontend-ui-kits-component-libraries', libraries: ['shadcn-ui/ui', 'tailwindcss', 'ant-design', 'shadcn-svelte', 'bits-ui', 'melt-ui', 'radix-ui/primitives', 'open-props', 'material-ui', 'primer/primitives'] },
+  { repo: 'study-markdown-parse-serve-render', libraries: ['panache', 'remark', 'markdoc', 'markdown-rs', 'marksman', 'pandoc'] },
+  { repo: 'study-memory-layers-for-agents', libraries: ['mem0', 'Parslee-ai/neo', 'statebench', 'Martian-Engineering/volt', 'mempalace', 'graphiti', 'delta-Mem', 'letta', 'graphify', 'honcho', 'OpenViking', 'hindsight', 'RetainDB', 'supermemory', 'byterover-cli', 'beads', 'Understand-Anything', 'paxm'] },
+  { repo: 'study-open-specs-and-standards', libraries: ['12-factor-agents', 'A2A', 'agents.md', 'anthropics/skills', 'google-labs-code/design.md', 'frictionlessdata/specs', 'llms-txt', 'modelcontextprotocol', 'OpenSpec', 'spec-kit', 'Parslee-ai/mcp-api', 'get-shit-done', 'symphony', 'superpowers'] },
+  { repo: 'study-sync-and-content-version-control', libraries: ['jj', 'seafile', 'seafile-server', 'syncthing', 'restic', 'kopia', 'automerge', 'rclone-ui', 'git-annex'] },
+  { repo: 'study-vector-databases', libraries: ['chroma', 'qdrant', 'weaviate', 'milvus', 'lancedb', 'pgvector'] },
+];
+
+const total = studies.reduce((sum, study) => sum + study.libraries.length, 0);
+---
+
+<section class="deck-slide" id="s08-studies" data-slot="studies">
+  <SlideFolio number={8} label="Studies" />
+  <div class="deck-inner max-w-[80rem]">
+    <p class="deck-eyebrow reveal-item">Studies</p>
+    <h2 class="deck-title mt-4 reveal-item" style="--delay: 90ms">
+      {studies.length} repos, <span class="gradient-text">{total}</span> pinned third-party libraries
+    </h2>
+
+    <ul class="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+      {studies.map((study, i) => (
+        <li class="deck-card fx-surface flex flex-col reveal-item" style={`--delay: ${160 + i * 55}ms`}>
+          <div class="flex items-baseline justify-between gap-2">
+            <p class="font-mono text-[0.72rem] leading-snug text-foreground">{study.repo.replace('study-', '')}</p>
+            <p class="font-mono text-[0.72rem] tabular-nums text-primary vibrant:text-secondary">{study.libraries.length}</p>
+          </div>
+          <p class="mt-3 text-[0.78rem] leading-relaxed text-muted-foreground">{study.libraries.join(' · ')}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>

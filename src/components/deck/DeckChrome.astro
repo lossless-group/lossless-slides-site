@@ -1,0 +1,195 @@
+---
+/**
+ * DeckChrome: the floating control capsule for a PageDeck.
+ *
+ * Inspired by calmstorm-decks' DeckNav. Holds a link back to the gallery,
+ * version cycling (‹ › and ← →) when a deck has more than one version, slide
+ * up/down, and the mode toggle. It talks to the player only through
+ * deck:section-* events, and hides with the rest of the chrome on `c`.
+ * Vertical keys move within a deck; horizontal keys move between its versions.
+ */
+import ModeToggle from '@components/basics/ModeToggle.astro';
+import type { DeckContext } from '@lib/decks';
+
+interface Props {
+  context: DeckContext;
+  homeHref?: string;
+}
+
+const { context, homeHref = '/#presentations' } = Astro.props;
+const { version, prev, next, index, total } = context;
+---
+
+<nav class="deck-chrome" aria-label="Deck controls">
+  <a href={homeHref} class="deck-chrome__btn" title="All presentations">
+    <span aria-hidden="true">⌂</span>
+    <span class="sr-only">All presentations</span>
+  </a>
+
+  {prev && next ? (
+    <span class="deck-chrome__group">
+      <a
+        href={prev.href}
+        class="deck-chrome__btn"
+        data-version-link="prev"
+        title={`Previous version (←): ${prev.label} · ${prev.voice}`}
+        aria-label={`Previous version: ${prev.label}`}
+      >‹</a>
+      <span class="deck-chrome__label" title={version.voice}>{version.label} · {index + 1}/{total}</span>
+      <a
+        href={next.href}
+        class="deck-chrome__btn"
+        data-version-link="next"
+        title={`Next version (→): ${next.label} · ${next.voice}`}
+        aria-label={`Next version: ${next.label}`}
+      >›</a>
+    </span>
+  ) : (
+    <span class="deck-chrome__label">{version.label} · {version.voice}</span>
+  )}
+
+  <span class="deck-chrome__group">
+    <button type="button" class="deck-chrome__btn" data-section-nav="prev" aria-label="Previous slide" title="Previous slide (↑)">↑</button>
+    <button type="button" class="deck-chrome__btn" data-section-nav="next" aria-label="Next slide" title="Next slide (↓)">↓</button>
+  </span>
+
+  <ModeToggle />
+</nav>
+
+<style>
+  .deck-chrome {
+    position: fixed;
+    right: var(--deck-chrome-inset, 1rem);
+    bottom: var(--deck-chrome-inset, 1rem);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.3rem;
+    border: 1px solid var(--fx-surface-border);
+    border-radius: calc(var(--radius) + 6px);
+    background: color-mix(in srgb, var(--background) 80%, transparent);
+    box-shadow: var(--fx-surface-shadow);
+    -webkit-backdrop-filter: blur(10px) saturate(130%);
+    backdrop-filter: blur(10px) saturate(130%);
+    font-family: var(--typeface-mono);
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
+  }
+
+  .deck-chrome:hover,
+  .deck-chrome:focus-within {
+    opacity: 1;
+  }
+
+  .deck-chrome__group {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
+  }
+
+  .deck-chrome__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2rem;
+    height: 2rem;
+    padding: 0 0.5rem;
+    border-radius: var(--radius);
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--foreground);
+    font-family: inherit;
+    font-size: 0.85rem;
+    line-height: 1;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      border-color 0.15s ease,
+      background-color 0.15s ease;
+  }
+
+  .deck-chrome__btn:hover {
+    border-color: var(--border);
+    background: var(--muted);
+  }
+
+  .deck-chrome__btn:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 1px;
+  }
+
+  .deck-chrome__label {
+    padding: 0 0.4rem;
+    font-size: 0.66rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--muted-foreground);
+  }
+
+  .deck-chrome[data-at-first='true'] [data-section-nav='prev'],
+  .deck-chrome[data-at-last='true'] [data-section-nav='next'] {
+    visibility: hidden;
+  }
+
+  :global(html[data-chrome='off']) .deck-chrome {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  @media (max-width: 640px) {
+    .deck-chrome__label { display: none; }
+  }
+</style>
+
+<script>
+  let currentSlide = 1;
+
+  function wireDeckChrome() {
+    document.querySelectorAll<HTMLElement>('.deck-chrome').forEach((nav) => {
+      if (nav.dataset.wired) return;
+      nav.dataset.wired = 'true';
+
+      nav.querySelectorAll<HTMLButtonElement>('[data-section-nav]').forEach((button) => {
+        button.addEventListener('click', () => {
+          const direction = button.dataset.sectionNav === 'prev' ? 'prev' : 'next';
+          window.dispatchEvent(new CustomEvent(`deck:section-${direction}`));
+        });
+      });
+
+      // Switching versions keeps the reader on the same slide number.
+      nav.querySelectorAll<HTMLAnchorElement>('[data-version-link]').forEach((link) => {
+        link.addEventListener('click', (e) => {
+          if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+          e.preventDefault();
+          window.location.href = `${link.getAttribute('href')}#s-${currentSlide}`;
+        });
+      });
+    });
+  }
+
+  window.addEventListener('deck:section-changed', (e) => {
+    const { index, isFirst, isLast } = (e as CustomEvent<{ index: number; isFirst: boolean; isLast: boolean }>).detail;
+    currentSlide = index + 1;
+    document.querySelectorAll<HTMLElement>('.deck-chrome').forEach((nav) => {
+      nav.dataset.atFirst = String(isFirst);
+      nav.dataset.atLast = String(isLast);
+    });
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.altKey) return;
+    const target = e.target;
+    if (target instanceof HTMLElement && (target.isContentEditable || target.closest('input, textarea, select'))) return;
+    const which = e.key === 'ArrowRight' ? 'next' : e.key === 'ArrowLeft' ? 'prev' : null;
+    if (!which) return;
+    const link = document.querySelector<HTMLAnchorElement>(`.deck-chrome [data-version-link="${which}"]`);
+    if (!link) return;
+    e.preventDefault();
+    link.click();
+  });
+
+  wireDeckChrome();
+  document.addEventListener('astro:page-load', wireDeckChrome);
+</script>

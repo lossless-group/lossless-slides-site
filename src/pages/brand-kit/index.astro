@@ -1,0 +1,157 @@
+---
+/**
+ * Brand kit: the Lossless brand as this site renders it, in whichever mode is
+ * active. Switch the mode in the header and every swatch below changes.
+ * Internal reference page, not indexed.
+ */
+import BaseLayout from '@layouts/BaseLayout.astro';
+import brand from '@brand';
+
+export const prerender = true;
+
+const modes = [
+  {
+    name: 'Light',
+    register: 'A newspaper, or a vintage annual investor report',
+    notes: 'Newsprint and ink. Newsreader serif for headlines and body, IBM Plex Mono for labels and figures. Hairline and double rules. One oxblood accent. No brand gradients: every gradient token collapses to solid ink.',
+  },
+  {
+    name: 'Dark',
+    register: 'The Lossless look as it has always been',
+    notes: 'A near-black violet ground, Inter, and the cyan → purple → crimson → orange gradient on marks, rules, and display type.',
+  },
+  {
+    name: 'Vibrant',
+    register: 'Gradient glass',
+    notes: 'Dark-based. The gradient stops become a fixed aura behind the page, glass surfaces with backdrop blur, radiant shadows, and glowing gradient type.',
+  },
+];
+
+const semantic = [
+  ['--background', 'Background'],
+  ['--foreground', 'Foreground'],
+  ['--card', 'Card'],
+  ['--muted', 'Muted'],
+  ['--muted-foreground', 'Muted text'],
+  ['--border', 'Border'],
+  ['--primary', 'Primary'],
+  ['--secondary', 'Secondary'],
+  ['--accent', 'Accent'],
+  ['--ring', 'Ring'],
+];
+
+const stops = [
+  ['--brand-cyan', '#22A6B5'],
+  ['--brand-purple', '#9138E0'],
+  ['--brand-crimson', '#D9233B'],
+  ['--brand-orange', '#F59C49'],
+  ['--brand-lime', '#BFEF47'],
+  ['--brand-aqua', '#04E5E5'],
+];
+
+const faces = [
+  { token: '--typeface-display', name: 'Display', sample: 'Notes from a 2 Year Rabbit Hole', className: 'font-display text-3xl font-semibold' },
+  { token: '--typeface-body', name: 'Body', sample: 'Coding agents are good at writing a whole, coherent page of HTML and CSS in one go.', className: 'font-body text-lg' },
+  { token: '--typeface-mono', name: 'Mono', sample: 'No. 06 · 1,166 context files', className: 'font-mono text-sm uppercase tracking-[0.16em]' },
+];
+---
+
+<BaseLayout title="Brand Kit · Lossless Slides" description="The Lossless brand as this site renders it, in all three modes." noindex>
+  <div class="mx-auto max-w-6xl px-6 pt-12 pb-20">
+    <header class="max-w-3xl">
+      <p class="text-xs uppercase tracking-[0.18em] text-muted-foreground">Internal reference</p>
+      <h1 class="mt-2">Brand kit</h1>
+      <p class="mt-4 text-muted-foreground">
+        Switch the mode in the header and everything below changes with it. Lossless only ever had one look; light and vibrant are derived from it, following the approach in <code class="font-mono text-sm">context-v/blueprints/Three-Modes-Derivation.md</code>.
+      </p>
+    </header>
+
+    <section class="mt-14">
+      <h2 class="text-2xl">Mark</h2>
+      <div class="mt-5 flex items-center justify-center rounded-lg border border-border bg-card p-10">
+        <img src={brand.assets.logoDark} alt={brand.name} class="h-12 w-auto" />
+      </div>
+      <p class="mt-3 text-sm text-muted-foreground">
+        One file serves every mode today. Parts of it are near-white, which washes out on light mode's newsprint; a print-ink variant is still needed.
+      </p>
+    </section>
+
+    <section class="mt-14">
+      <h2 class="text-2xl">Modes</h2>
+      <div class="mt-5 grid gap-4 md:grid-cols-3">
+        {modes.map((mode) => (
+          <article class="fx-surface rounded-lg p-6">
+            <p class="font-mono text-xs uppercase tracking-[0.16em] text-muted-foreground">{mode.name}</p>
+            <p class="mt-3 text-lg font-semibold text-foreground">{mode.register}</p>
+            <p class="mt-2 text-sm text-muted-foreground">{mode.notes}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="mt-14">
+      <h2 class="text-2xl">Semantic colors</h2>
+      <p class="mt-2 text-sm text-muted-foreground">What components read. Values shown are for the current mode.</p>
+      <div class="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+        {semantic.map(([token, name]) => (
+          <div>
+            <div class="h-16 rounded-md border border-border" style={`background: var(${token})`}></div>
+            <p class="mt-2 text-sm font-medium text-foreground">{name}</p>
+            <p class="font-mono text-xs text-muted-foreground">{token}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="mt-14">
+      <h2 class="text-2xl">Brand stops</h2>
+      <p class="mt-2 text-sm text-muted-foreground">The raw Lossless palette. The same in every mode.</p>
+      <div class="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+        {stops.map(([token, hex]) => (
+          <div>
+            <div class="h-16 rounded-md border border-border" style={`background: var(${token})`}></div>
+            <p class="mt-2 font-mono text-xs text-foreground">{token}</p>
+            <p class="font-mono text-xs text-muted-foreground">{hex}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="mt-14">
+      <h2 class="text-2xl">Gradient</h2>
+      <p class="mt-2 text-sm text-muted-foreground">Full in dark, louder in vibrant, and solid ink in light.</p>
+      <div class="gradient-bg mt-5 h-10 rounded-md"></div>
+      <p class="gradient-text mt-6 w-fit font-display text-5xl font-bold">Lossless</p>
+    </section>
+
+    <section class="mt-14">
+      <h2 class="text-2xl">Typefaces</h2>
+      <div class="mt-5 flex flex-col divide-y divide-border border-y border-border">
+        {faces.map((face) => (
+          <div class="grid gap-2 py-5 md:grid-cols-[12rem_1fr] md:items-baseline">
+            <div>
+              <p class="text-sm font-medium text-foreground">{face.name}</p>
+              <p class="font-mono text-xs text-muted-foreground">{face.token}</p>
+            </div>
+            <p class={`text-foreground ${face.className}`}>{face.sample}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="mt-14">
+      <h2 class="text-2xl">Effects</h2>
+      <p class="mt-2 text-sm text-muted-foreground">The <code class="font-mono">--fx-*</code> dial: quiet in light, a lift in dark, glass and glow in vibrant.</p>
+      <div class="mt-5 grid gap-4 md:grid-cols-2">
+        <div class="fx-surface rounded-lg p-8">
+          <p class="font-mono text-xs uppercase tracking-[0.16em] text-muted-foreground">.fx-surface</p>
+          <p class="mt-3 text-foreground">A card that prints flat, lifts in dark, and turns to glass in vibrant.</p>
+        </div>
+        <div class="rounded-lg border border-border p-8">
+          <p class="font-mono text-xs uppercase tracking-[0.16em] text-muted-foreground">.fx-text-glow</p>
+          <p class="fx-text-glow mt-3 font-display text-3xl font-semibold text-foreground">Radiant type</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>

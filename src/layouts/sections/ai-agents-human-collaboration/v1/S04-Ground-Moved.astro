@@ -1,0 +1,39 @@
+---
+import SlideFolio from '@components/deck/SlideFolio.astro';
+
+const moves = [
+  {
+    figure: '$60B',
+    headline: 'Cursor, from launch to a $60B acquisition in about three years.',
+    detail:
+      'First release in March 2023. SpaceX announced it would buy Anysphere, Cursor’s parent, on June 16, 2026 and closed the deal on August 14, 2026. The largest acquisition of a venture-backed startup ever.',
+  },
+  {
+    figure: 'Feb 2, 2025',
+    headline: '“Vibe coding” got its name.',
+    detail: 'In a tweet Andrej Karpathy later called a “shower of thoughts throwaway.”',
+  },
+  {
+    figure: '51%',
+    headline: 'More than half of the code committed to GitHub is now written with AI.',
+    detail: 'Week of April 21, 2026.',
+  },
+];
+---
+
+<section class="deck-slide" id="s04-ground-moved" data-slot="ground-moved">
+  <SlideFolio number={4} label="The paradigm, continued" />
+  <div class="deck-inner">
+    <h2 class="deck-title max-w-[18ch] reveal-item">How fast the ground moved</h2>
+
+    <div class="mt-12 grid gap-[var(--deck-gap)] md:grid-cols-3">
+      {moves.map((move, i) => (
+        <article class="deck-panel flex flex-col reveal-item" style={`--delay: ${140 + i * 140}ms`}>
+          <p class="deck-stat gradient-text w-fit">{move.figure}</p>
+          <p class="deck-body mt-5 font-semibold text-foreground">{move.headline}</p>
+          <p class="deck-small mt-3 text-muted-foreground">{move.detail}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

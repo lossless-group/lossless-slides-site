@@ -2,6 +2,13 @@
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
   --font-size: 16px;
 
+  /* Typefaces. Modes re-point these; components read them through the
+   * font-display / font-body / font-mono utilities. */
+  --typeface-serif: 'Newsreader', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+  --typeface-display: var(--font-sans);
+  --typeface-body: var(--font-sans);
+  --typeface-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
   /* Lossless Group brand gradient */
   --gradient-brand: linear-gradient(112deg, #22A6B5 6%, #9138E0 24%, #D9233B 48%, #F59C49 72%);
   --gradient-brand-text: linear-gradient(112deg, #22A6B5 6%, #9138E0 24%, #D9233B 48%, #F59C49 72%);
@@ -14,6 +21,27 @@
   --brand-orange: #F59C49;
   --brand-lime: #BFEF47;
   --brand-aqua: #04E5E5;
+
+  /* Print stock and ink for light mode (newspaper / annual report). Derived,
+   * not brand canon: Lossless never had a light mode. The accents are brand
+   * stops pushed toward ink, so they read as printed color, not screen color. */
+  --newsprint: #F3EEE2;
+  --newsprint-deep: #E7DFCC;
+  --newsprint-card: #FAF7EF;
+  --ink: #1C1813;
+  --ink-soft: #4A4238;
+  --ink-faint: #7A7063;
+  --oxblood: color-mix(in srgb, var(--brand-crimson) 70%, var(--ink));
+  --teal-ink: color-mix(in srgb, var(--brand-cyan) 62%, var(--ink));
+  --olive-ink: #4F6B2A;
+  --ochre-ink: #8A5A12;
+
+  /* Glass and glow for vibrant mode. */
+  --vibrant-night: #06020D;
+  --vibrant-violet: #B77CFF;
+  --vibrant-rose: #FF5A73;
+  --vibrant-apricot: #FFB36B;
+  --vibrant-aqua: #3FF3F3;
 
   /* Light mode */
   --background: #E8F3F5;
@@ -52,6 +80,17 @@
   /* Mode-loudness tokens — used by the .ak-callout--info hero variant. */
   --fx-glow-opacity: 0.08;
   --fx-glow-spread: 12px;
+
+  /* Effect tokens: the loudness dial each mode turns. Read by .fx-surface,
+   * .fx-text-glow, .deck-rule, and the page aura on <body>. */
+  --fx-surface-bg: var(--card);
+  --fx-surface-border: var(--border);
+  --fx-surface-shadow: 0 1px 2px rgb(26 13 51 / 0.06);
+  --fx-backdrop: none;
+  --fx-aura: none;
+  --fx-text-glow: none;
+  --fx-rule: var(--border);
+  --fx-rule-weight: 1px;
 
   /* Reader-prose link color (Tier 2 semantic token). Used by .prose a so
    * the markdown renderer can re-theme links per mode without touching
@@ -96,10 +135,126 @@
   --fx-glow-opacity: 0.22;
   --fx-glow-spread: 24px;
 
+  --fx-surface-bg: var(--card);
+  --fx-surface-border: var(--border);
+  --fx-surface-shadow: 0 0 0 1px rgb(145 56 224 / 0.10), 0 10px 28px rgb(0 0 0 / 0.45);
+  --fx-rule: var(--border);
+
   /* Dark-mode prose links: brand-aqua. Brighter than brand-cyan (closer
    * to neon), and intentionally consistent with the dark-mode info /
    * question callout accents — reader's attention layer (links +
    * informational callouts) reads as one chromatic family. */
   --prose-link: var(--brand-aqua);
   --prose-link-hover: color-mix(in srgb, var(--brand-aqua) 80%, white);
+}
+
+/* Light: a newspaper, or a vintage financial report. Paper and ink, serif
+ * type, hairline rules, one restrained oxblood accent. No brand gradients:
+ * every gradient token collapses to solid ink, so .gradient-text prints as
+ * ink and .gradient-line prints as a rule. */
+[data-theme='light'] {
+  --typeface-display: var(--typeface-serif);
+  --typeface-body: var(--typeface-serif);
+
+  --background: var(--newsprint);
+  --foreground: var(--ink);
+  --card: var(--newsprint-card);
+  --card-foreground: var(--ink);
+  --primary: var(--oxblood);
+  --primary-foreground: var(--newsprint-card);
+  --secondary: var(--teal-ink);
+  --secondary-foreground: var(--newsprint-card);
+  --accent: var(--oxblood);
+  --accent-foreground: var(--newsprint-card);
+  --muted: var(--newsprint-deep);
+  --muted-foreground: var(--ink-soft);
+  --border: rgb(28 24 19 / 0.22);
+  --input: rgb(28 24 19 / 0.18);
+  --ring: var(--oxblood);
+  --radius: 0.125rem;
+
+  --gradient-brand: linear-gradient(var(--ink), var(--ink));
+  --gradient-brand-text: linear-gradient(var(--ink), var(--ink));
+  --gradient-brand-subtle: linear-gradient(transparent, transparent);
+
+  --callout-note:      var(--ink-faint);
+  --callout-info:      var(--teal-ink);
+  --callout-tip:       var(--olive-ink);
+  --callout-success:   var(--olive-ink);
+  --callout-warning:   var(--ochre-ink);
+  --callout-danger:    var(--oxblood);
+  --callout-quote:     var(--ink-soft);
+  --callout-example:   var(--ink-soft);
+  --callout-question:  var(--teal-ink);
+  --callout-important: var(--oxblood);
+  --callout-llm-response: var(--ink-soft);
+  --callout-excerpt:   var(--ink-faint);
+
+  --fx-glow-opacity: 0;
+  --fx-glow-spread: 0px;
+  --fx-surface-bg: var(--newsprint-card);
+  --fx-surface-border: var(--border);
+  --fx-surface-shadow: none;
+  --fx-rule: var(--ink);
+
+  --prose-link: var(--oxblood);
+  --prose-link-hover: var(--ink);
+}
+
+/* Vibrant: dark-based, and loud. The gradient stops become a fixed aura
+ * behind the page, glass surfaces with backdrop blur, radiant shadows, and
+ * glowing gradient type. If it only reads as "darker than dark", it failed. */
+[data-theme='vibrant'] {
+  --background: var(--vibrant-night);
+  --foreground: #F4EEFF;
+  --card: rgb(28 14 52 / 0.55);
+  --card-foreground: #F4EEFF;
+  --primary: var(--vibrant-violet);
+  --primary-foreground: #0B0514;
+  --secondary: var(--brand-aqua);
+  --secondary-foreground: #04161A;
+  --accent: var(--brand-orange);
+  --accent-foreground: #1A0D05;
+  --muted: rgb(145 56 224 / 0.16);
+  --muted-foreground: #CDBDF2;
+  --border: rgb(183 124 255 / 0.32);
+  --input: rgb(183 124 255 / 0.28);
+  --ring: var(--brand-aqua);
+
+  --gradient-brand: linear-gradient(112deg, var(--brand-aqua) 0%, var(--brand-purple) 32%, var(--brand-crimson) 62%, var(--brand-orange) 92%);
+  --gradient-brand-text: linear-gradient(112deg, var(--vibrant-aqua) 0%, var(--vibrant-violet) 34%, var(--vibrant-rose) 64%, var(--vibrant-apricot) 94%);
+  --gradient-brand-subtle: linear-gradient(135deg, rgb(4 229 229 / 0.20) 0%, rgb(145 56 224 / 0.22) 35%, rgb(217 35 59 / 0.16) 65%, rgb(245 156 73 / 0.14) 100%);
+
+  --callout-note:      #A9A3C7;
+  --callout-info:      var(--brand-aqua);
+  --callout-tip:       var(--brand-lime);
+  --callout-success:   var(--brand-lime);
+  --callout-warning:   var(--brand-orange);
+  --callout-danger:    var(--vibrant-rose);
+  --callout-quote:     var(--vibrant-violet);
+  --callout-example:   var(--vibrant-violet);
+  --callout-question:  var(--brand-aqua);
+  --callout-important: var(--vibrant-rose);
+  --callout-llm-response: color-mix(in srgb, var(--vibrant-violet) 60%, var(--brand-aqua));
+  --callout-excerpt:   #A9A3C7;
+
+  --fx-glow-opacity: 0.55;
+  --fx-glow-spread: 48px;
+  --fx-surface-bg: linear-gradient(145deg, rgb(255 255 255 / 0.09), rgb(255 255 255 / 0.02));
+  --fx-surface-border: rgb(255 255 255 / 0.14);
+  --fx-surface-shadow:
+    0 0 0 1px rgb(183 124 255 / 0.18),
+    0 18px 50px -18px rgb(145 56 224 / 0.65),
+    0 0 80px -30px rgb(4 229 229 / 0.45);
+  --fx-backdrop: blur(18px) saturate(150%);
+  --fx-aura:
+    radial-gradient(55% 45% at 12% 8%, rgb(145 56 224 / 0.42), transparent 70%),
+    radial-gradient(45% 40% at 88% 18%, rgb(4 229 229 / 0.22), transparent 70%),
+    radial-gradient(50% 45% at 80% 92%, rgb(245 156 73 / 0.24), transparent 70%),
+    radial-gradient(40% 35% at 20% 90%, rgb(217 35 59 / 0.20), transparent 70%);
+  --fx-text-glow: 0 0 28px rgb(183 124 255 / 0.45);
+  --fx-rule: rgb(183 124 255 / 0.4);
+
+  --prose-link: var(--brand-aqua);
+  --prose-link-hover: color-mix(in srgb, var(--brand-aqua) 75%, white);
 }

@@ -1,0 +1,42 @@
+---
+import SlideFolio from '@components/deck/SlideFolio.astro';
+
+const figures = [
+  { figure: '1.9M', label: 'lines of code' },
+  { figure: '5.8K', label: 'commits' },
+  { figure: '32', label: 'active repos' },
+  { figure: '1,770', label: 'tool indexes', note: 'Indexes and explainers: over 1.5M lines of code.' },
+  { figure: '600+', label: 'concepts and vocabulary explainers' },
+  { figure: '1,166', label: 'context files', note: 'And my own Claude Code plugin that runs them.' },
+];
+---
+
+<section class="deck-slide" id="s06-numbers" data-slot="numbers">
+  <SlideFolio number={6} label="By the numbers" />
+  <div class="deck-inner">
+    <p class="deck-eyebrow reveal-item">And here is</p>
+    <h2 class="deck-title mt-4 max-w-[20ch] reveal-item" style="--delay: 90ms">
+      Two years in the rabbit hole, by the numbers
+    </h2>
+
+    <dl class="mt-12 grid grid-cols-2 gap-x-[var(--deck-gap)] gap-y-6 md:grid-cols-3">
+      {figures.map((item, i) => (
+        <div class="deck-panel flex flex-col-reverse justify-end reveal-item" style={`--delay: ${160 + i * 90}ms`}>
+          <dt class="deck-small mt-3 text-muted-foreground">
+            {item.label}
+            {item.note && <span class="mt-1 block italic">{item.note}</span>}
+          </dt>
+          <dd class="deck-stat gradient-text w-fit">{item.figure}</dd>
+        </div>
+      ))}
+    </dl>
+
+    <div class="mt-10 max-w-[48rem] reveal-item" style="--delay: 760ms">
+      <p class="deck-body text-foreground">One true monorepo according to the recommendations I would make.</p>
+      <p class="deck-body mt-2 text-muted-foreground">
+        And a harness plugin, markdown flavor, a content development suite, and a pear tree.
+      </p>
+      <p class="deck-lede mt-6">Plus….</p>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,64 @@
+---
+/**
+ * BaseHead: everything inside <head> that every page shares, so the site
+ * layout and the full-screen deck layout cannot drift apart. Includes the
+ * first-paint mode script, the three typefaces the modes use, and SEO tags.
+ */
+import brand from '@brand';
+import { SITE_SEO } from '@/config/seo';
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** Share image, absolute or site-relative. Omitted tags fall back to the site default. */
+  image?: string;
+  /** Internal reference pages (design system, brand kit) and draft decks opt out of search indexing. */
+  noindex?: boolean;
+}
+
+const {
+  title = SITE_SEO.defaultTitle,
+  description = SITE_SEO.defaultDescription,
+  image = SITE_SEO.defaultImage,
+  noindex = false,
+} = Astro.props;
+
+const origin = Astro.site ?? Astro.url.origin;
+const canonical = new URL(Astro.url.pathname, origin).toString();
+const imageUrl = image ? new URL(image, origin).toString() : undefined;
+---
+<meta charset="utf-8" />
+<!-- Apply the reader's stored color mode before first paint, so the page never
+     flashes the server default. The key matches src/scripts/mode-switcher.ts. -->
+<script is:inline>
+  (function () {
+    try {
+      var mode = localStorage.getItem('lossless-slides:mode');
+      if (mode === 'light' || mode === 'dark' || mode === 'vibrant') {
+        document.documentElement.setAttribute('data-theme', mode);
+      }
+    } catch (e) {}
+  })();
+</script>
+<link rel="icon" type="image/svg+xml" href={brand.assets.favicon} />
+<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+<link rel="canonical" href={canonical} />
+<meta name="viewport" content="width=device-width" />
+{noindex && <meta name="robots" content="noindex, nofollow" />}
+<meta name="generator" content={Astro.generator} />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<!-- Inter for dark and vibrant, Newsreader for light's newspaper register, IBM Plex Mono for labels and figures. -->
+<link
+  href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&display=swap"
+  rel="stylesheet"
+/>
+<meta name="description" content={description} />
+<meta property="og:site_name" content={SITE_SEO.siteName} />
+<meta property="og:type" content="website" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+{imageUrl && <meta property="og:image" content={imageUrl} />}
+<meta name="twitter:card" content={imageUrl ? 'summary_large_image' : 'summary'} />
+<title>{title}</title>

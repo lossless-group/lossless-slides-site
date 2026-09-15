@@ -1,0 +1,36 @@
+---
+import SlideFolio from '@components/deck/SlideFolio.astro';
+
+const recommendations = [
+  {
+    text: 'Have the sales team use Plaud. Record everything. Automate ingestion into the corpus.',
+    detail: 'Qualify worthy transcripts to go into the User Research Repository.',
+  },
+  { text: 'Designate a “corpora manager.”' },
+  { text: 'Participate in open standards and specifications bodies.' },
+  { text: 'Host a competition, and give mad PR for it.' },
+  { text: 'Department of Crazy Ideas.', detail: 'Still relevant. More relevant.' },
+  { text: 'Host hackathons on looming projects and ideas.' },
+  { text: '“Emergent Adoption Systems.”', detail: 'Have a Rho/Brex account. A coalition of the willing.' },
+  { text: 'Designate or recruit a “Stack Engineer.”', detail: 'Not a true developer; “beneath them.”' },
+  { text: 'Designate or recruit a “Data Readiness” owner.' },
+];
+---
+
+<section class="deck-slide" id="s12-culture-recommendations" data-slot="culture-recommendations">
+  <SlideFolio number={12} label="Recommendations, continued" />
+  <div class="deck-inner">
+    <p class="deck-eyebrow reveal-item">Recommendations</p>
+    <h2 class="deck-title mt-4 reveal-item" style="--delay: 90ms">…and for <span class="gradient-text">culture</span></h2>
+
+    <ol class="mt-10 grid gap-x-[var(--deck-gap)] gap-y-5 md:grid-cols-2 lg:grid-cols-3">
+      {recommendations.map((rec, i) => (
+        <li class="deck-panel reveal-item" style={`--delay: ${160 + i * 70}ms`}>
+          <p class="font-mono text-xs tabular-nums text-muted-foreground">{String(i + 1).padStart(2, '0')}</p>
+          <p class="deck-body mt-2 font-semibold text-foreground">{rec.text}</p>
+          {rec.detail && <p class="deck-small mt-1 text-muted-foreground">{rec.detail}</p>}
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>

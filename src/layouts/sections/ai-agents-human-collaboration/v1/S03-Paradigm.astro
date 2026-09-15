@@ -1,0 +1,60 @@
+---
+import SlideFolio from '@components/deck/SlideFolio.astro';
+
+const oldFlow = [
+  'Design System',
+  'Figma clickable paper prototypes',
+  'Engineering-level documentation',
+  'Steal from UI kits, use Backend-as-a-Service',
+];
+
+const newLoop = [
+  'Watch agents make weeks of progress in minutes.',
+  'Get overwhelmed with excitement.',
+  'Watch agents punch you in the face and buck you off.',
+  'Tell agents and models you’re quitting and going back to 1.',
+  'Wake up and try again anyway.',
+];
+---
+
+<section class="deck-slide" id="s03-paradigm" data-slot="paradigm">
+  <SlideFolio number={3} label="The paradigm" />
+  <div class="deck-inner">
+    <p class="deck-eyebrow reveal-item">Punch punch, then buck.</p>
+    <h2 class="deck-title mt-5 max-w-[22ch] reveal-item" style="--delay: 90ms">
+      The New Paradigm was the Old Paradigm within 6 months in 2024.
+    </h2>
+
+    <div class="mt-12 grid gap-[var(--deck-gap)] md:grid-cols-2">
+      <article class="reveal-item" style="--delay: 200ms">
+        <p class="deck-label">1 · The old new paradigm</p>
+        <ol class="mt-5 flex flex-col">
+          {oldFlow.map((step, i) => (
+            <li class="deck-body flex items-baseline gap-3 border-t border-border py-2.5 text-muted-foreground">
+              <span class="font-mono text-xs tabular-nums">{String(i + 1).padStart(2, '0')}</span>
+              <span>{step}</span>
+            </li>
+          ))}
+          <li class="deck-body flex items-baseline gap-3 border-t-2 border-foreground/70 py-2.5 font-semibold text-foreground">
+            <span class="font-mono text-xs">=</span>
+            <span class="line-through decoration-primary decoration-2">Product Velocity</span>
+          </li>
+        </ol>
+        <p class="deck-small mt-4 italic text-muted-foreground">Coding agents blew this up by Jan 2025.</p>
+      </article>
+
+      <article class="deck-card fx-surface reveal-item" style="--delay: 320ms">
+        <p class="deck-label text-primary vibrant:text-secondary">2 · The new new paradigm</p>
+        <ol class="mt-5 flex flex-col gap-3">
+          {newLoop.map((step, i) => (
+            <li class="deck-body flex items-baseline gap-3 text-foreground">
+              <span class="font-mono text-xs tabular-nums text-muted-foreground">{String(i + 1).padStart(2, '0')}</span>
+              <span>{step}</span>
+            </li>
+          ))}
+        </ol>
+        <p class="deck-label mt-5 text-muted-foreground" aria-label="and repeat">↺ repeat</p>
+      </article>
+    </div>
+  </div>
+</section>

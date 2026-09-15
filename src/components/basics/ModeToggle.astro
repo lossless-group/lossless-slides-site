@@ -1,0 +1,109 @@
+---
+/**
+ * ModeToggle: cycles the color mode, light → dark → vibrant.
+ *
+ * Adapted from dididecks-ai's shell ModeToggle. Not fixed-position: it sits
+ * wherever it is placed (the site header, the deck chrome). Every toggle on a
+ * page shares one mode switcher. In a deck, the `m` key clicks it.
+ */
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<button
+  type="button"
+  class:list={['mode-toggle', className]}
+  data-mode-toggle
+  aria-label="Cycle color mode"
+  title="Cycle color mode: light, dark, vibrant"
+>
+  <svg class="mode-toggle__sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+  </svg>
+  <svg class="mode-toggle__moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+  </svg>
+  <svg class="mode-toggle__spark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3zM19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8L19 16z" />
+  </svg>
+</button>
+
+<style>
+  .mode-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    padding: 0.35rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted-foreground);
+    cursor: pointer;
+    transition:
+      color 0.15s ease,
+      border-color 0.15s ease,
+      box-shadow 0.15s ease;
+  }
+
+  .mode-toggle:hover {
+    color: var(--foreground);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 18%, transparent);
+  }
+
+  .mode-toggle:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+
+  .mode-toggle svg {
+    width: 1.05rem;
+    height: 1.05rem;
+    display: none;
+  }
+
+  :global(html[data-theme='light']) .mode-toggle .mode-toggle__sun,
+  :global(html[data-theme='dark']) .mode-toggle .mode-toggle__moon,
+  :global(html[data-theme='vibrant']) .mode-toggle .mode-toggle__spark {
+    display: block;
+  }
+</style>
+
+<script>
+  import { getModeSwitcher, type Mode } from '../../scripts/mode-switcher';
+
+  const NEXT: Record<Mode, Mode> = { light: 'dark', dark: 'vibrant', vibrant: 'light' };
+  let listening = false;
+
+  function bindModeToggles() {
+    const switcher = getModeSwitcher();
+
+    const sync = () => {
+      const mode = switcher.getMode();
+      document.querySelectorAll<HTMLElement>('[data-mode-toggle]').forEach((button) => {
+        button.setAttribute('aria-label', `Color mode: ${mode}. Switch to ${NEXT[mode]}.`);
+        button.title = `Mode: ${mode} (click for ${NEXT[mode]})`;
+      });
+    };
+
+    document.querySelectorAll<HTMLElement>('[data-mode-toggle]').forEach((button) => {
+      if (button.dataset.bound) return;
+      button.dataset.bound = 'true';
+      button.addEventListener('click', () => switcher.cycle());
+    });
+
+    if (!listening) {
+      window.addEventListener('mode-change', sync);
+      listening = true;
+    }
+    sync();
+  }
+
+  bindModeToggles();
+  document.addEventListener('astro:page-load', bindModeToggles);
+</script>

@@ -1,0 +1,69 @@
+---
+import SlideFolio from '@components/deck/SlideFolio.astro';
+
+const versions = [
+  {
+    version: 'Version 1',
+    when: '',
+    text: 'A Python scripting backend that ran prompts on customer records. What came back: bunk answers, hallucinations, excuses, filler text, and advice on how to find the info I was asking the model to find.',
+  },
+  {
+    version: 'Version 2',
+    when: 'Demo by January 2025',
+    text: 'Bolt.new (and even once in Lovable). A React + Supabase monolith with three LLM providers. Then shelved: I had other pressing matters I needed to line up.',
+  },
+  {
+    version: 'Version 3',
+    when: 'Summer 2025, with Tanuj',
+    text: 'Much better, as a microservices architecture, but it didn’t use the Recommendations.',
+  },
+  {
+    version: 'Version 4',
+    when: 'Today, started March 2026',
+    text: '40 independently deployable units: a shell, 20 Svelte 5 microfrontends, 12 microservices talking over NATS, and 7 shared packages. Now at semver 4.0.1.x.',
+  },
+];
+---
+
+<section class="deck-slide" id="s10-augment-it" data-slot="augment-it">
+  <SlideFolio number={10} label="Augment-It" />
+  <div class="deck-inner max-w-[76rem]">
+    <p class="deck-eyebrow reveal-item">Augment-It</p>
+    <h2 class="deck-title mt-4 max-w-[22ch] reveal-item" style="--delay: 90ms">
+      The thing Jon asked for, now on <span class="gradient-text">version 4</span>
+    </h2>
+    <p class="deck-body mt-5 max-w-[52rem] text-muted-foreground reveal-item" style="--delay: 160ms">
+      Upload a CSV or spreadsheet, fire AI enrichment passes against it, triage the responses, accept the good ones back onto rows, and promote enhanced rows into new canonical record sets.
+    </p>
+
+    <ol class="mt-8 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+      {versions.map((v, i) => (
+        <li
+          class:list={['deck-card fx-surface flex flex-col reveal-item', i === versions.length - 1 && 'ring-1 ring-primary/50 vibrant:ring-secondary/60']}
+          style={`--delay: ${240 + i * 120}ms`}
+        >
+          <p class="deck-label text-foreground">{v.version}</p>
+          {v.when && <p class="deck-label mt-1 normal-case tracking-normal text-muted-foreground">{v.when}</p>}
+          <p class="deck-small mt-3 text-muted-foreground">{v.text}</p>
+        </li>
+      ))}
+    </ol>
+
+    <div class="mt-8 grid items-start gap-[var(--deck-gap)] lg:grid-cols-[1fr_1.1fr]">
+      <p class="deck-lede font-semibold text-foreground not-italic reveal-item" style="--delay: 740ms">
+        It exists to prove our Recommendations (next slide), and I’m still trying to impose them on it.
+      </p>
+
+      <div class="deck-panel reveal-item" style="--delay: 860ms">
+        <p class="deck-label">The honest audit · September 12, 2026</p>
+        <ul class="deck-small mt-3 flex flex-col gap-1.5 text-muted-foreground">
+          <li><span class="font-semibold text-foreground">Rigorous at the system level:</span> 196 context-v docs, 101 changelog entries.</li>
+          <li><span class="font-semibold text-foreground">Absent at the component level:</span> 0 of 40 units with their own DESIGN.md, changelog, context-v, or API contract; 14 of 40 with a README.</li>
+        </ul>
+        <blockquote class="deck-small mt-4 border-l-2 border-primary pl-4 italic text-foreground vibrant:border-secondary">
+          “Documentation happened where a human sat and thought, and did not happen where an agent generated a working unit and moved on.”
+        </blockquote>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,40 @@
+---
+import SlideFolio from '@components/deck/SlideFolio.astro';
+
+const exchange = [
+  { who: 'Me', said: '“There’s a new way to develop products now, I want to show you through a demo project.”' },
+  { who: 'Jon Laerdal', said: '“Can you have AI help our product and design teams understand more about our customers?”' },
+  { who: 'Me', said: '“Sure!”', aside: '(How hard could that be?)' },
+];
+---
+
+<section class="deck-slide" id="s02-punched" data-slot="punched">
+  <SlideFolio number={2} label="The setup" />
+  <div class="deck-inner grid items-center gap-[var(--deck-gap)] lg:grid-cols-[1.15fr_1fr]">
+    <div>
+      <p class="deck-eyebrow reveal-item">Punched in the face → bucked by the horse</p>
+      <blockquote class="mt-6 reveal-item" style="--delay: 90ms">
+        <p class="deck-title">“Everyone has a plan until the <span class="gradient-text">AI model</span> punches you in the face.”</p>
+        <footer class="deck-label mt-6">— Mike Tyson</footer>
+      </blockquote>
+    </div>
+
+    <ol class="flex flex-col gap-3">
+      {exchange.map((line, i) => (
+        <li
+          class:list={[
+            'deck-card fx-surface reveal-item',
+            line.who === 'Me' ? 'lg:mr-10' : 'lg:ml-10',
+          ]}
+          style={`--delay: ${240 + i * 140}ms`}
+        >
+          <p class="deck-label text-primary vibrant:text-secondary">{line.who}</p>
+          <p class="deck-body mt-2 text-foreground">
+            {line.said}
+            {line.aside && <em class="text-muted-foreground"> {line.aside}</em>}
+          </p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>

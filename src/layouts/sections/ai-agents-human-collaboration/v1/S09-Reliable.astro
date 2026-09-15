@@ -1,0 +1,52 @@
+---
+import SlideFolio from '@components/deck/SlideFolio.astro';
+
+const reliable = [
+  { group: 'Surprising breakthroughs', items: 'Scripts and the command line, learning a stack from its docs, outputting docs as HTML/CSS/JS/JSON, finding things on the filesystem faster than any human, and an always-up, always-down companion.' },
+  { group: 'Code & stacks', items: 'The canon stack, migrations and upgrades, test coverage, responsive layouts.' },
+  { group: 'Ops & troubleshooting', items: 'Command line hell, configuration hell, sysadmin and DevOps.' },
+  { group: 'Docs & prose', items: 'Documentation, readable prose.' },
+  { group: 'Data & metadata', items: 'Metadata fill-outs, tidying and completing data sets.' },
+];
+
+const unreliable = [
+  { group: 'Judgment & honesty', items: 'Sycophancy, faking it instead of admitting limits, holding back commentary.' },
+  { group: 'Memory & context', items: 'Recent work, context-window limits, multi-session projects.' },
+  { group: 'Discipline', items: 'Complex guidelines, overzealous changes, staying on task when stray warnings appear.' },
+  { group: 'Prose', items: 'Writing from real evidence, writing for the right audience with a skimmable hierarchy.' },
+  { group: 'Sources & formats', items: 'Web search, proprietary formats.' },
+];
+
+const columns = [
+  { heading: 'Can be relied on for', mark: '✓', rows: reliable },
+  { heading: 'Can’t be relied on for', mark: '✕', rows: unreliable },
+];
+---
+
+<section class="deck-slide" id="s09-reliable" data-slot="reliable">
+  <SlideFolio number={9} label="What I learned" />
+  <div class="deck-inner">
+    <h2 class="deck-title max-w-[22ch] reveal-item">
+      What coding agents can be relied on for, and what they can’t
+    </h2>
+
+    <div class="mt-10 grid gap-[var(--deck-gap)] md:grid-cols-2">
+      {columns.map((column, c) => (
+        <article class="deck-panel reveal-item" style={`--delay: ${160 + c * 180}ms`}>
+          <p class:list={['deck-label flex items-center gap-2', c === 0 ? 'text-secondary' : 'text-primary']}>
+            <span aria-hidden="true" class="text-base">{column.mark}</span>
+            {column.heading}
+          </p>
+          <dl class="mt-5 flex flex-col gap-4">
+            {column.rows.map((row) => (
+              <div>
+                <dt class="deck-body font-semibold text-foreground">{row.group}</dt>
+                <dd class="deck-small mt-0.5 text-muted-foreground">{row.items}</dd>
+              </div>
+            ))}
+          </dl>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

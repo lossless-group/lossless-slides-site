@@ -1,0 +1,21 @@
+---
+/**
+ * SlideFolio: the running head across the top of a slide, like the folio
+ * line of a printed page. Publisher on the left; slide number and label on
+ * the right. Light mode draws it as a newspaper double rule.
+ */
+interface Props {
+  number: number;
+  label: string;
+}
+
+const { number, label } = Astro.props;
+const folio = String(number).padStart(2, '0');
+---
+
+<header class="absolute inset-x-0 top-0 px-[var(--deck-pad-x)] pt-5" aria-hidden="true">
+  <div class="mx-auto flex max-w-[var(--deck-measure)] items-baseline justify-between gap-6 border-b border-border pb-2 font-mono text-[0.66rem] uppercase tracking-[0.18em] text-muted-foreground light:border-b-[3px] light:border-double light:border-foreground">
+    <span>The Lossless Group</span>
+    <span>No. {folio} · {label}</span>
+  </div>
+</header>

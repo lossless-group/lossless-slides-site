@@ -1,0 +1,405 @@
+---
+/**
+ * PageDeck: plays a stack of slide components as a presentation.
+ *
+ * Inspired by calmstorm-decks' PageAsDeckWrapper (itself adapted from
+ * dark-matter's), per context-v/blueprints/
+ * PageDeck-Pattern-for-Slide-Focused-Astro-Knots-Sites.md.
+ *
+ * Kept from what proved out: scroll-snap, ↑ ↓ PageUp PageDown Home End,
+ * double-click halves, #s-N deep links, `c` hides chrome, `f` fullscreen,
+ * reveal on arrival, deck:section-* events so chrome never reaches in, and
+ * counting direct-child slides only.
+ *
+ * Improved: modifier keys pass through (Cmd+C copies instead of hiding the
+ * chrome), Space and Shift+Space, slides taller than the screen scroll before
+ * advancing, chrome colored by mode tokens, reduced motion, slide tracking by
+ * IntersectionObserver, scrollend as the arrival signal, listeners released on
+ * page swap, `m` cycles the color mode, and the URL hash follows the slide.
+ *
+ * Each child component renders exactly one top-level <section>.
+ */
+interface Props {
+  /** Accessible name for the deck region, usually the deck title. */
+  label: string;
+  enableScrollSnap?: boolean;
+  showHints?: boolean;
+  /** Milliseconds the navigation hint stays up. 0 keeps it up. */
+  hintDuration?: number;
+}
+
+const { label, enableScrollSnap = true, showHints = true, hintDuration = 2800 } = Astro.props;
+---
+
+<div
+  class="page-deck"
+  data-page-deck
+  data-scroll-snap={String(enableScrollSnap)}
+  data-hint-duration={String(showHints ? hintDuration : -1)}
+  role="region"
+  aria-label={label}
+  tabindex="-1"
+>
+  <div class="page-deck__slides" data-deck-slides>
+    <slot />
+  </div>
+
+  {showHints && (
+    <p class="page-deck__hint" aria-hidden="true">
+      <span class="page-deck__hint-arrow">↓</span> scroll · arrow keys · space
+    </p>
+  )}
+
+  <p class="page-deck__counter" aria-live="polite" aria-atomic="true">
+    <span class="sr-only">Slide </span>
+    <span class="page-deck__current" data-deck-current>1</span>
+    <span class="page-deck__sep" aria-hidden="true">/</span>
+    <span class="sr-only"> of </span>
+    <span data-deck-total>–</span>
+  </p>
+</div>
+
+<style>
+  .page-deck {
+    height: var(--deck-height, 100dvh);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    position: relative;
+  }
+
+  .page-deck[data-scroll-snap='true'] {
+    scroll-snap-type: y mandatory;
+  }
+
+  .page-deck:focus {
+    outline: none;
+  }
+
+  .page-deck__counter,
+  .page-deck__hint {
+    position: fixed;
+    z-index: 90;
+    margin: 0;
+    font-family: var(--typeface-mono);
+    color: var(--muted-foreground);
+    background: color-mix(in srgb, var(--background) 82%, transparent);
+    border: 1px solid var(--border);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    transition: opacity 0.35s ease;
+  }
+
+  .page-deck__counter {
+    left: var(--deck-chrome-inset, 1rem);
+    bottom: var(--deck-chrome-inset, 1rem);
+    display: flex;
+    align-items: baseline;
+    gap: 0.3rem;
+    padding: 0.4rem 0.7rem;
+    border-radius: var(--radius);
+    font-size: 0.75rem;
+    line-height: 1.2;
+    letter-spacing: 0.06em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .page-deck__current {
+    color: var(--foreground);
+    font-weight: 600;
+  }
+
+  .page-deck__sep {
+    opacity: 0.45;
+  }
+
+  .page-deck__hint {
+    left: 50%;
+    bottom: var(--deck-chrome-inset, 1rem);
+    transform: translateX(-50%);
+    padding: 0.45rem 0.95rem;
+    border-radius: 999px;
+    font-size: 0.68rem;
+    line-height: 1.2;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+  }
+
+  .page-deck.show-hint .page-deck__hint { opacity: 1; }
+  .page-deck.is-last .page-deck__hint { opacity: 0; }
+
+  .page-deck__hint-arrow { display: inline-block; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .page-deck__hint-arrow { animation: page-deck-nudge 2s ease-in-out infinite; }
+  }
+
+  @keyframes page-deck-nudge {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(3px); }
+  }
+
+  /* The counter, hint, and chrome share the bottom edge; on a phone the hint yields. */
+  @media (max-width: 640px) {
+    .page-deck__hint { display: none; }
+  }
+
+  :global(html[data-chrome='off']) .page-deck__counter,
+  :global(html[data-chrome='off']) .page-deck__hint {
+    opacity: 0;
+    pointer-events: none;
+  }
+</style>
+
+<script>
+  interface SlideChange {
+    index: number;
+    total: number;
+    isFirst: boolean;
+    isLast: boolean;
+  }
+
+  /** Pixels of slack when deciding whether a tall slide still has content below or above. */
+  const EDGE = 4;
+
+  const isTyping = (target: EventTarget | null) =>
+    target instanceof HTMLElement &&
+    (target.isContentEditable || target.closest('input, textarea, select') !== null);
+
+  const toggleChrome = () => {
+    const root = document.documentElement;
+    root.dataset.chrome = root.dataset.chrome === 'off' ? 'on' : 'off';
+  };
+
+  const toggleFullscreen = () => {
+    if (document.fullscreenElement) {
+      document.exitFullscreen().catch(() => {});
+    } else {
+      document.documentElement.requestFullscreen?.().catch(() => {});
+    }
+  };
+
+  function initPageDecks() {
+    document.querySelectorAll<HTMLElement>('[data-page-deck]').forEach((deck) => {
+      if (deck.dataset.deckReady) return;
+
+      // Direct children only. Slides may nest decorative <section>s, and a flat
+      // querySelectorAll('section') once counted those too ("24 / 17").
+      const slides = Array.from(
+        deck.querySelectorAll<HTMLElement>(':scope > [data-deck-slides] > section'),
+      );
+      if (slides.length === 0) return;
+      deck.dataset.deckReady = 'true';
+
+      const listeners = new AbortController();
+      const { signal } = listeners;
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const currentEl = deck.querySelector<HTMLElement>('[data-deck-current]');
+      const totalEl = deck.querySelector<HTMLElement>('[data-deck-total]');
+
+      let current = 0;
+      let navigating = false;
+      let releaseTimer = 0;
+
+      const scrollBehavior = (): ScrollBehavior => (reducedMotion.matches ? 'auto' : 'smooth');
+
+      const render = () => {
+        const isFirst = current === 0;
+        const isLast = current === slides.length - 1;
+        if (currentEl) currentEl.textContent = String(current + 1);
+        if (totalEl) totalEl.textContent = String(slides.length);
+        deck.classList.toggle('is-first', isFirst);
+        deck.classList.toggle('is-last', isLast);
+
+        // The address bar follows the slide, so a copied link lands where the reader is.
+        const url = isFirst ? `${location.pathname}${location.search}` : `#s-${current + 1}`;
+        history.replaceState(history.state, '', url);
+
+        window.dispatchEvent(
+          new CustomEvent<SlideChange>('deck:section-changed', {
+            detail: { index: current, total: slides.length, isFirst, isLast },
+          }),
+        );
+      };
+
+      const release = () => {
+        navigating = false;
+        window.clearTimeout(releaseTimer);
+      };
+
+      const goTo = (index: number, instant = false) => {
+        if (index < 0 || index >= slides.length) return;
+        navigating = true;
+        window.clearTimeout(releaseTimer);
+        current = index;
+        slides[index].scrollIntoView({ behavior: instant ? 'auto' : scrollBehavior(), block: 'start' });
+        render();
+        // scrollend is the honest arrival signal. The timer covers browsers
+        // without it, and moves too small to scroll at all.
+        releaseTimer = window.setTimeout(release, 900);
+      };
+
+      deck.addEventListener('scrollend', release, { signal });
+
+      // A slide taller than the screen scrolls through its content before the
+      // next key press advances, so nothing gets skipped.
+      const hasMore = (direction: 1 | -1) => {
+        const slide = slides[current].getBoundingClientRect();
+        const view = deck.getBoundingClientRect();
+        return direction === 1 ? slide.bottom > view.bottom + EDGE : slide.top < view.top - EDGE;
+      };
+
+      const step = (direction: 1 | -1) => {
+        if (hasMore(direction)) {
+          deck.scrollBy({ top: direction * deck.clientHeight * 0.85, behavior: scrollBehavior() });
+          return;
+        }
+        goTo(current + direction);
+      };
+
+      // The current slide is whichever shows the most pixels. Pixels, not
+      // ratio: a slide taller than the screen never reaches a high ratio.
+      const visiblePx = new Map<Element, number>();
+      const tracker = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            visiblePx.set(entry.target, entry.isIntersecting ? entry.intersectionRect.height : 0);
+          }
+          if (navigating) return;
+          let best = current;
+          let bestPx = -1;
+          slides.forEach((slide, i) => {
+            const px = visiblePx.get(slide) ?? 0;
+            if (px > bestPx) {
+              bestPx = px;
+              best = i;
+            }
+          });
+          if (best !== current) {
+            current = best;
+            render();
+          }
+        },
+        { root: deck, threshold: [0, 0.1, 0.25, 0.5, 0.75, 1] },
+      );
+      slides.forEach((slide) => tracker.observe(slide));
+
+      document.addEventListener(
+        'keydown',
+        (e) => {
+          if (e.defaultPrevented) return;
+          // Browser and OS shortcuts pass through: Cmd+C copies, Cmd+F finds.
+          if (e.metaKey || e.ctrlKey || e.altKey) return;
+          if (isTyping(e.target)) return;
+          const onControl =
+            e.target instanceof HTMLElement &&
+            e.target.closest('button, a, summary, [role="button"]') !== null;
+
+          switch (e.key) {
+            case 'ArrowDown':
+            case 'PageDown':
+              e.preventDefault();
+              step(1);
+              break;
+            case 'ArrowUp':
+            case 'PageUp':
+              e.preventDefault();
+              step(-1);
+              break;
+            case ' ':
+              if (onControl) return; // Space activates the focused control.
+              e.preventDefault();
+              step(e.shiftKey ? -1 : 1);
+              break;
+            case 'Home':
+              e.preventDefault();
+              goTo(0);
+              break;
+            case 'End':
+              e.preventDefault();
+              goTo(slides.length - 1);
+              break;
+            case 'c':
+            case 'C':
+              e.preventDefault();
+              toggleChrome();
+              break;
+            case 'f':
+            case 'F':
+              e.preventDefault();
+              toggleFullscreen();
+              break;
+            case 'm':
+            case 'M':
+              document.querySelector<HTMLElement>('[data-mode-toggle]')?.click();
+              break;
+            case 'Escape':
+              if (document.documentElement.dataset.chrome === 'off') {
+                document.documentElement.dataset.chrome = 'on';
+              }
+              break;
+          }
+        },
+        { signal },
+      );
+
+      window.addEventListener('deck:section-prev', () => goTo(current - 1), { signal });
+      window.addEventListener('deck:section-next', () => goTo(current + 1), { signal });
+
+      deck.addEventListener(
+        'dblclick',
+        (e) => {
+          if (e.target instanceof HTMLElement && e.target.closest('a, button, input, textarea, select')) return;
+          window.getSelection()?.removeAllRanges(); // a double-click also selects a word
+          goTo(current + (e.clientY < window.innerHeight / 2 ? -1 : 1));
+        },
+        { signal },
+      );
+
+      // Reveal on arrival. The stagger is CSS (transition-delay: var(--delay)).
+      const revealer = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (!entry.isIntersecting) continue;
+            entry.target.classList.add('revealed');
+            revealer.unobserve(entry.target);
+          }
+        },
+        { root: deck, threshold: 0.15 },
+      );
+      deck.querySelectorAll('.reveal-item').forEach((item) => revealer.observe(item));
+
+      const deepLink = location.hash.match(/^#s-(\d+)$/);
+      if (deepLink) {
+        goTo(Math.min(slides.length, Math.max(1, Number(deepLink[1]))) - 1, true);
+      }
+      // After every module script has run, so chrome listening for
+      // deck:section-changed receives the starting state.
+      requestAnimationFrame(render);
+
+      const hintMs = Number(deck.dataset.hintDuration);
+      if (hintMs >= 0) {
+        deck.classList.add('show-hint');
+        if (hintMs > 0) window.setTimeout(() => deck.classList.remove('show-hint'), hintMs);
+      }
+
+      deck.focus({ preventScroll: true });
+
+      document.addEventListener(
+        'astro:before-swap',
+        () => {
+          listeners.abort();
+          tracker.disconnect();
+          revealer.disconnect();
+          window.clearTimeout(releaseTimer);
+        },
+        { once: true, signal },
+      );
+    });
+  }
+
+  initPageDecks();
+  document.addEventListener('astro:page-load', initPageDecks);
+</script>

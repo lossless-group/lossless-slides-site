@@ -1,0 +1,31 @@
+---
+import SlideFolio from '@components/deck/SlideFolio.astro';
+
+const ventures = [
+  { figure: '1', title: 'Co-investment fund', detail: '8 LP commitments, 15 direct investments.' },
+  { figure: '2 + 2', title: 'SPVs on thesis, and syndicate deals', detail: 'Aalo Atomics, Chroma. Trusted Router, Glen.' },
+  { figure: 'Now', title: 'A future-of-health fund, Humain VC', detail: 'Investments into ProfileHealth, CogSci, NextSense, Radicle Health.' },
+];
+---
+
+<section class="deck-slide" id="s07-vc" data-slot="vc">
+  <SlideFolio number={7} label="Meanwhile" />
+  <div class="deck-inner">
+    <h2 class="deck-title reveal-item">VC addicts gotta <span class="gradient-text">VC.</span></h2>
+
+    <ol class="mt-12 flex flex-col">
+      {ventures.map((venture, i) => (
+        <li
+          class="grid items-baseline gap-x-[var(--deck-gap)] gap-y-2 border-t border-border py-6 last:border-b md:grid-cols-[minmax(8rem,14rem)_1fr] reveal-item light:border-foreground"
+          style={`--delay: ${160 + i * 150}ms`}
+        >
+          <p class="deck-stat">{venture.figure}</p>
+          <div>
+            <p class="deck-lede font-semibold text-foreground not-italic">{venture.title}</p>
+            <p class="deck-body mt-1 text-muted-foreground">{venture.detail}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>

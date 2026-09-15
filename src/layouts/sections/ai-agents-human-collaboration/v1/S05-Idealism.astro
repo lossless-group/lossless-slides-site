@@ -1,0 +1,45 @@
+---
+import SlideFolio from '@components/deck/SlideFolio.astro';
+
+const heard = [
+  { who: 'Tore Laerdal', said: 'Maybe Michael could help us think about what technology platforms are worth adopting?' },
+  { who: 'Alf Christian', said: 'Maybe Michael could help us think about what we can cut or migrate away from in our SaaS license per person spend?' },
+  { who: 'Anonymous', said: 'Maybe Michael could help us reduce the drag we have getting in our own way?' },
+  { who: 'Everyone', said: 'Maybe Michael can listen to our issues and goals and knock some sense into all the other people who stall our progress unintentionally?' },
+];
+---
+
+<section class="deck-slide" id="s05-idealism" data-slot="idealism">
+  <SlideFolio number={5} label="The rabbit hole" />
+  <div class="deck-inner">
+    <h2 class="deck-title max-w-[24ch] reveal-item">
+      My idealism, delusions, and gratitude made for a <em class="gradient-text">Wonderland</em> of a rabbit hole.
+    </h2>
+
+    <div class="mt-12 grid gap-[var(--deck-gap)] lg:grid-cols-[0.9fr_1.4fr]">
+      <article class="reveal-item" style="--delay: 160ms">
+        <p class="deck-label">1 · My intention</p>
+        <p class="deck-body mt-4 text-foreground">
+          Play a meaningful role in catalyzing breakthroughs in Laerdal’s path to thrive for another 100 years.
+        </p>
+        <p class="deck-body mt-4 text-muted-foreground">
+          <span class="font-semibold text-foreground">How?</span> By translating best practices from Silicon Valley, startups, scaleups, and world-class tech giants.
+        </p>
+      </article>
+
+      <article class="reveal-item" style="--delay: 260ms">
+        <p class="deck-label">2 · What I heard</p>
+        <ul class="mt-4 grid gap-3 sm:grid-cols-2">
+          {heard.map((quote, i) => (
+            <li class="deck-card fx-surface reveal-item" style={`--delay: ${340 + i * 110}ms`}>
+              <p class="deck-small text-foreground">“{quote.said}”</p>
+              <p class="deck-label mt-3 text-primary vibrant:text-secondary">{quote.who}</p>
+            </li>
+          ))}
+        </ul>
+      </article>
+    </div>
+
+    <p class="deck-lede mt-10 reveal-item" style="--delay: 800ms">And…..</p>
+  </div>
+</section>

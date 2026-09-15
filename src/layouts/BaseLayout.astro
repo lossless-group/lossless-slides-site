@@ -1,7 +1,6 @@
 ---
 import '@styles/globals.css';
-import brand from '@brand';
-import { SITE_SEO } from '@/config/seo';
+import BaseHead from '@components/basics/BaseHead.astro';
 import Header from '@components/basics/Header.astro';
 
 interface Props {
@@ -13,39 +12,15 @@ interface Props {
   noindex?: boolean;
 }
 
-const {
-  title = SITE_SEO.defaultTitle,
-  description = SITE_SEO.defaultDescription,
-  image = SITE_SEO.defaultImage,
-  noindex = false,
-} = Astro.props;
 const SITE_MODE = import.meta.env.SITE_MODE ?? 'dark';
 
-const origin = Astro.site ?? Astro.url.origin;
-const canonical = new URL(Astro.url.pathname, origin).toString();
-const imageUrl = image ? new URL(image, origin).toString() : undefined;
+// No inline --primary / --secondary / --accent on <html>: an inline style
+// outranks every [data-theme] block, which pinned all three modes to one
+// palette. The mode tokens in tokens.css own those colors now.
 ---
-<html lang="en" data-theme={SITE_MODE} style={`--primary:${brand.colors.primary};--secondary:${brand.colors.secondary};--accent:${brand.colors.accent};`}>
+<html lang="en" data-theme={SITE_MODE}>
   <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href={brand.assets.favicon} />
-    <link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
-    <link rel="canonical" href={canonical} />
-    <meta name="viewport" content="width=device-width" />
-    {noindex && <meta name="robots" content="noindex, nofollow" />}
-    <meta name="generator" content={Astro.generator} />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <meta name="description" content={description} />
-    <meta property="og:site_name" content={SITE_SEO.siteName} />
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:url" content={canonical} />
-    {imageUrl && <meta property="og:image" content={imageUrl} />}
-    <meta name="twitter:card" content={imageUrl ? 'summary_large_image' : 'summary'} />
-    <title>{title}</title>
+    <BaseHead {...Astro.props} />
   </head>
   <body class="min-h-screen flex flex-col">
     <Header />

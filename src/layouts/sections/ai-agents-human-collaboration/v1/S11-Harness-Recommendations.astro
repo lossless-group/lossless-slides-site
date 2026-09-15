@@ -1,0 +1,30 @@
+---
+import SlideFolio from '@components/deck/SlideFolio.astro';
+
+const recommendations = ['API', 'Docs', 'Changelog', 'UI Kit', 'Context Vigilance'];
+---
+
+<section class="deck-slide" id="s11-harness-recommendations" data-slot="harness-recommendations">
+  <SlideFolio number={11} label="Recommendations" />
+  <div class="deck-inner">
+    <p class="deck-eyebrow reveal-item">Recommendations for harness engineering</p>
+
+    <ol class="mt-8 flex flex-col">
+      {recommendations.map((thing, i) => (
+        <li
+          class="flex items-baseline gap-[var(--deck-gap)] border-b border-border py-3 reveal-item light:border-foreground/40"
+          style={`--delay: ${90 + i * 120}ms`}
+        >
+          <span class="font-mono text-sm tabular-nums text-muted-foreground">{String(i + 1).padStart(2, '0')}</span>
+          <span class="deck-title">
+            {thing} <span class="gradient-text">First</span>
+          </span>
+        </li>
+      ))}
+    </ol>
+
+    <p class="deck-lede mt-10 max-w-[40rem] reveal-item" style="--delay: 760ms">
+      Put those bones in, and harness engineering speeds up over time instead of stalls over time.
+    </p>
+  </div>
+</section>
