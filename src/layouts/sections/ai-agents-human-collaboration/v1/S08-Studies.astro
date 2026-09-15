@@ -22,17 +22,17 @@ const total = studies.reduce((sum, study) => sum + study.libraries.length, 0);
   <div class="deck-inner max-w-[80rem]">
     <p class="deck-eyebrow reveal-item">Studies</p>
     <h2 class="deck-title mt-4 reveal-item" style="--delay: 90ms">
-      {studies.length} repos, <span class="gradient-text">{total}</span> pinned third-party libraries
+      {studies.length} Study repos, covering <span class="gradient-text">{total}</span> influential codebases.
     </h2>
 
-    <ul class="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+    <ul class="mt-6 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-5">
       {studies.map((study, i) => (
-        <li class="deck-card fx-surface flex flex-col reveal-item" style={`--delay: ${160 + i * 55}ms`}>
+        <li class="deck-card fx-surface flex flex-col p-3 reveal-item" style={`--delay: ${160 + i * 55}ms`}>
           <div class="flex items-baseline justify-between gap-2">
-            <p class="font-mono text-[0.72rem] leading-snug text-foreground">{study.repo.replace('study-', '')}</p>
-            <p class="font-mono text-[0.72rem] tabular-nums text-primary vibrant:text-secondary">{study.libraries.length}</p>
+            <p class="font-mono text-[0.68rem] leading-snug text-foreground">{study.repo.replace('study-', '')}</p>
+            <p class="font-mono text-[0.68rem] tabular-nums text-primary vibrant:text-secondary">{study.libraries.length}</p>
           </div>
-          <p class="mt-3 text-[0.78rem] leading-relaxed text-muted-foreground">{study.libraries.join(' · ')}</p>
+          <p class="mt-2 text-[0.7rem] leading-snug text-muted-foreground">{study.libraries.join(' · ')}</p>
         </li>
       ))}
     </ul>

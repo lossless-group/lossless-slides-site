@@ -1,7 +1,14 @@
 ---
 import SlideFolio from '@components/deck/SlideFolio.astro';
 
-const recommendations = ['API', 'Docs', 'Changelog', 'UI Kit', 'Context Vigilance'];
+// The last word of each recommendation carries the gradient.
+const recommendations = [
+  { thing: 'Changelog & CI/CD', tag: 'First' },
+  { thing: 'Context Vigilance', tag: 'First' },
+  { thing: 'API', tag: 'First' },
+  { thing: 'UI Kit', tag: 'CI/CD' },
+  { thing: 'Docs', tag: 'CI/CD' },
+];
 ---
 
 <section class="deck-slide" id="s11-harness-recommendations" data-slot="harness-recommendations">
@@ -10,14 +17,14 @@ const recommendations = ['API', 'Docs', 'Changelog', 'UI Kit', 'Context Vigilanc
     <p class="deck-eyebrow reveal-item">Recommendations for harness engineering</p>
 
     <ol class="mt-8 flex flex-col">
-      {recommendations.map((thing, i) => (
+      {recommendations.map((rec, i) => (
         <li
           class="flex items-baseline gap-[var(--deck-gap)] border-b border-border py-3 reveal-item light:border-foreground/40"
           style={`--delay: ${90 + i * 120}ms`}
         >
           <span class="font-mono text-sm tabular-nums text-muted-foreground">{String(i + 1).padStart(2, '0')}</span>
           <span class="deck-title">
-            {thing} <span class="gradient-text">First</span>
+            {rec.thing} <span class="gradient-text">{rec.tag}</span>
           </span>
         </li>
       ))}

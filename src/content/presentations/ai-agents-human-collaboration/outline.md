@@ -59,6 +59,7 @@ Punch punch, then buck.
    - **Alf Christian:** "Maybe Michael could help us think about what we can cut or migrate away from in our SaaS license per person spend?"
    - **Anonymous:** "Maybe Michael could help us reduce the drag we have getting in our own way?"
    - **Everyone:** "Maybe Michael can listen to our issues and goals and knock some sense into all the other people who stall our progress unintentionally?"
+3. **What I hoped:** When at Learn Capital, I would come to Stavanger and everyone would make time for me, I would present to a crowded room, have teams assembled to give them feedback. I was hoping I could quickly repeat that for AI Readiness + Transformation consulting.....
 
 And..... *(anticipate next slide)*
 
@@ -82,13 +83,13 @@ Plus.... *(anticipating next slide)*
 
 ## VC Addicts gotta VC.
 
-1. **1 Co-Investment fund** with 8 LP commitments, 15 direct investments.
+1. **1 Co-Investment Fund: [Hypernova](https://hypernova-site.vercel.app).** 8 LP commitments, 15 direct investments. Investments include Thinking Machines, Harmonic, Ruya, Bruin, Star Catcher. *(Same row, second column:)* **1 Impact Foundation: [The Water Foundation](https://the-water-foundation.com).** Water Resilience for 1B people by 2040.
 2. **Two SPVs on thesis, 2 syndicate deals.** Aalo Atomics, Chroma. Trusted Router, Glen.
 3. **And now a future-of-health fund, Humain VC.** Investments into ProfileHealth, CogSci, NextSense, Radicle Health.
 
 ---
 
-## Studies: 10 repos, 93 pinned third-party libraries
+## Studies: 10 Study repos, covering 93 influential codebases.
 
 - **study-agent-harnesses:** opencode, goose, aider, OpenHands, modelcontextprotocol/python-sdk, continue, autogen, cline, codex, earendil-works/pi
 - **study-content-engines:** astro-big-doc, content-structure, galaxy, mdBook
@@ -122,11 +123,11 @@ Plus.... *(anticipating next slide)*
 
 ## Recommendations for Harness Engineering
 
-1. **API First**
-2. **Docs First**
-3. **Changelog First**
-4. **UI Kit First**
-5. **Context Vigilance First**
+1. **Changelog & CI/CD First**
+2. **Context Vigilance First**
+3. **API First**
+4. **UI Kit CI/CD**
+5. **Docs CI/CD**
 
 Put those bones in, and harness engineering speeds up over time instead of stalls over time.
 
@@ -157,12 +158,13 @@ Put those bones in, and harness engineering speeds up over time instead of stall
 
  - Have sales team use Plaud. Record everything. Automate ingestion into corpus.
     - Qualify worthy transcripts to go into User Research Repository.
+ - Implement a Flexible Hierarchy model inspired by Amazon.
+ - "Emergent Adoption Systems" - Have a Rho/Brex account. Coalation of the willing. 
  - Designate a "corpora manager."
  - Participate in Open Standards and Specifications bodies.
  - Host a competition, give mad PR for it.
  - Department of Crazy Ideas (still relevant, more relevant).
  - Host hackathons on looming projects/ideas.
- - "Emergent Adoption Systems" - Have a Rho/Brex account. Coalation of the willing. 
  - Designate or recruit a "Stack Engineer" / Not a true developer, "beneath them".
  - Designate or recruit an "Data Readiness" owner. 
 

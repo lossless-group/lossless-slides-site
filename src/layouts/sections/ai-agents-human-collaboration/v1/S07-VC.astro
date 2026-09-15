@@ -1,10 +1,23 @@
 ---
 import SlideFolio from '@components/deck/SlideFolio.astro';
 
-const ventures = [
-  { figure: '1', title: 'Co-investment fund', detail: '8 LP commitments, 15 direct investments.' },
-  { figure: '2 + 2', title: 'SPVs on thesis, and syndicate deals', detail: 'Aalo Atomics, Chroma. Trusted Router, Glen.' },
-  { figure: 'Now', title: 'A future-of-health fund, Humain VC', detail: 'Investments into ProfileHealth, CogSci, NextSense, Radicle Health.' },
+// Each row holds one or two ventures; a two-venture row splits into columns.
+// An optional name/href pair renders as "title: name", with the name linked.
+type Venture = { figure: string; title: string; name?: string; href?: string; detail: string; investments?: string[] };
+const rows: Venture[][] = [
+  [
+    {
+      figure: '1',
+      title: 'Co-Investment Fund',
+      name: 'Hypernova',
+      href: 'https://hypernova-site.vercel.app',
+      detail: '8 LP commitments, 15 direct investments.',
+      investments: ['Thinking Machines', 'Harmonic', 'Ruya', 'Bruin', 'Star Catcher'],
+    },
+    { figure: '1', title: 'Impact Foundation', name: 'The Water Foundation', href: 'https://the-water-foundation.com', detail: 'Water Resilience for 1B people by 2040.' },
+  ],
+  [{ figure: '2 + 2', title: 'SPVs on thesis, and syndicate deals', detail: 'Aalo Atomics, Chroma. Trusted Router, Glen.' }],
+  [{ figure: 'Now', title: 'A future-of-health fund, Humain VC', detail: 'Investments into ProfileHealth, CogSci, NextSense, Radicle Health.' }],
 ];
 ---
 
@@ -14,16 +27,40 @@ const ventures = [
     <h2 class="deck-title reveal-item">VC addicts gotta <span class="gradient-text">VC.</span></h2>
 
     <ol class="mt-12 flex flex-col">
-      {ventures.map((venture, i) => (
+      {rows.map((row, i) => (
         <li
-          class="grid items-baseline gap-x-[var(--deck-gap)] gap-y-2 border-t border-border py-6 last:border-b md:grid-cols-[minmax(8rem,14rem)_1fr] reveal-item light:border-foreground"
+          class:list={[
+            'grid items-baseline gap-x-[var(--deck-gap)] gap-y-2 border-t border-border py-6 last:border-b reveal-item light:border-foreground',
+            row.length > 1 ? 'md:grid-cols-[auto_1fr_auto_1fr]' : 'md:grid-cols-[minmax(8rem,14rem)_1fr]',
+          ]}
           style={`--delay: ${160 + i * 150}ms`}
         >
-          <p class="deck-stat">{venture.figure}</p>
-          <div>
-            <p class="deck-lede font-semibold text-foreground not-italic">{venture.title}</p>
-            <p class="deck-body mt-1 text-muted-foreground">{venture.detail}</p>
-          </div>
+          {row.map((venture) => (
+            <>
+              <p class="deck-stat">{venture.figure}</p>
+              <div>
+                <p class="deck-lede font-semibold text-foreground not-italic">
+                  {venture.title}{venture.name && (
+                    <>: <a
+                      href={venture.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="underline decoration-primary decoration-2 underline-offset-4 transition-colors hover:text-primary vibrant:decoration-secondary vibrant:hover:text-secondary"
+                    >{venture.name}</a></>
+                  )}
+                </p>
+                <p class="deck-body mt-1 text-muted-foreground">{venture.detail}</p>
+                {venture.investments && (
+                  <p class="deck-small mt-1 text-muted-foreground">
+                    <span class="font-semibold text-foreground">Investments include</span>{' '}
+                    {venture.investments.map((company, j) => (
+                      <><span class="whitespace-nowrap">{company}</span>{j < venture.investments!.length - 1 && ' · '}</>
+                    ))}
+                  </p>
+                )}
+              </div>
+            </>
+          ))}
         </li>
       ))}
     </ol>
