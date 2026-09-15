@@ -263,7 +263,9 @@ The site builds as a server-output Astro app for **Vercel** via `@astrojs/vercel
 pnpm build
 ```
 
-The site URL is a placeholder, `https://lossless-slides-site.vercel.app`, until a domain is chosen. Set `SITE_URL` to override it; sitemap and canonical URLs read from it. Update `public/robots.txt` to match when the domain is final.
+The site deploys to `https://lossless-decks.vercel.app`, which `astro.config.mjs` and `public/robots.txt` both name. Set `SITE_URL` to override it; sitemap and canonical URLs read from it. Update both files when a custom domain is chosen.
+
+Every push, on any branch, becomes the production deployment. Vercel's own Git auto-deploy is off (`vercel.json`, `git.deploymentEnabled: false`) because it can only promote one branch; `.github/workflows/deploy-production.yml` is the single deploy path and needs the repo secrets `VERCEL_TOKEN`, `VERCEL_ORG_ID`, and `VERCEL_PROJECT_ID`.
 
 Vercel should watch this repo directly, not the parent `astro-knots` repo, so the site must stay self-contained: no `workspace:*` dependencies and no imports from `@knots/*` packages.
 

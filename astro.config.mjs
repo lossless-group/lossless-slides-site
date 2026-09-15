@@ -11,9 +11,9 @@ import sitemap from '@astrojs/sitemap'
 //   reminder Preference-for-Shortcuts-in-Config-to-Absolute-Paths)
 
 export default defineConfig({
-  // Placeholder until the production domain is chosen. @astrojs/sitemap and
-  // canonical URLs both read this.
-  site: process.env.SITE_URL ?? 'https://lossless-slides-site.vercel.app',
+  // The Vercel deployment domain, until a custom one is chosen. @astrojs/sitemap
+  // and canonical URLs both read this; public/robots.txt names it separately.
+  site: process.env.SITE_URL ?? 'https://lossless-decks.vercel.app',
   output: 'server',
   adapter: vercel(),
   // The dev-only toolbar overlays the bottom-centre of every page, which is

@@ -1,0 +1,51 @@
+# Every push, on every branch, becomes the production deployment.
+#
+# Vercel's own Git integration can only promote ONE branch to production, so it
+# is switched off in vercel.json (`git.deploymentEnabled: false`) and this
+# workflow is the single deploy path. Without that, each push would produce a
+# preview build from Vercel AND a production build from here.
+name: Deploy to Vercel Production
+
+on:
+  push:
+    branches: ['**']
+  workflow_dispatch:
+
+# One production deploy at a time; a newer push cancels an in-flight older one,
+# so the live site converges on the most recent commit rather than whichever
+# build happened to finish last.
+concurrency:
+  group: vercel-production
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      # Pulls the project's production environment variables (SITE_URL et al.)
+      # so the build here matches a build run on Vercel's own infrastructure.
+      - name: Pull Vercel production environment
+        run: pnpm dlx vercel@latest pull --yes --environment=production --token="$VERCEL_TOKEN"
+
+      - name: Build
+        run: pnpm dlx vercel@latest build --prod --token="$VERCEL_TOKEN"
+
+      - name: Deploy to production
+        run: pnpm dlx vercel@latest deploy --prebuilt --prod --token="$VERCEL_TOKEN"
