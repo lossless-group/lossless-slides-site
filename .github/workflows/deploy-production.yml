@@ -1,14 +1,23 @@
 # Every push, on every branch, becomes the production deployment.
 #
-# Vercel's own Git integration can only promote ONE branch to production, so it
-# is switched off in vercel.json (`git.deploymentEnabled: false`) and this
-# workflow is the single deploy path. Without that, each push would produce a
-# preview build from Vercel AND a production build from here.
+# Vercel's Git integration can only promote ONE branch to production, and for
+# this project that branch is `main`. It keeps that job: `main` deploys to
+# production natively, with no credentials needed here.
+#
+# This workflow covers the rest — a push to ANY OTHER branch is built and
+# promoted to production via the Vercel CLI. `branches-ignore: [main]` is what
+# keeps the two paths off each other; without it, a push to main would build
+# twice and the two production deploys would race.
+#
+# Deliberate consequence: if the secrets below are missing, non-main branches
+# silently don't deploy, but main still does. An earlier version disabled
+# Vercel's integration outright and took the whole site's deploys down with it
+# when the secrets weren't set yet.
 name: Deploy to Vercel Production
 
 on:
   push:
-    branches: ['**']
+    branches-ignore: ['main']
   workflow_dispatch:
 
 # One production deploy at a time; a newer push cancels an in-flight older one,
