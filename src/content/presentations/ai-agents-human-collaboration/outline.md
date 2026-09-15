@@ -237,3 +237,13 @@ Put those bones in, and harness engineering speeds up over time instead of stall
 - **Knowing the limits of their own context window.** Models aren't proactively aware of it, so in long sessions or at large scale, key things get "omitted," causing downstream setbacks or yak shaving.
 - **Differentiating audiences and information hierarchies in prose.** The content can be good but read for the wrong audience. It can be robust but lack intuition for "skimming"-friendly hierarchies.
 - **Sticking to the task when random flags or warnings come up.** A stray warning can set off a long loop of fixing something that wasn't on the to-do list.
+
+## Slide Idea:
+
+### Strategy Recommendations:
+
+1. Be the live first responder and CPR video collection of record, sell to AI research labs. Ensure it's used by major robotics companies like Tesla, Apptronick, Figure.
+2. Build out "ScenarioCloud" as a platform. Publish a modern open standard and specification. 
+3. Use Million Lives Fund and Laerdal Finans to be early capital partners for nursing/hospital admin robots, in whatever crazy form. 
+4. Become a "channel partner" for related medical device and healthtech distribution. Your sales force is groundwork asset that cannot be replaced. Your evidence-based brand is intangibly priceless. 
+5. Use content generation automations to assure SEO/GEO optimization and keep all queries and chats leading back to Laerdal on saving lives. 
