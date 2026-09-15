@@ -263,7 +263,7 @@ The site builds as a server-output Astro app for **Vercel** via `@astrojs/vercel
 pnpm build
 ```
 
-The site deploys to `https://lossless-decks.vercel.app`, which `astro.config.mjs` and `public/robots.txt` both name. Set `SITE_URL` to override it; sitemap and canonical URLs read from it. Update both files when a custom domain is chosen.
+The site deploys to `https://lossless-decks.vercel.app`, which `astro.config.mjs` and `public/robots.txt` both name. That hostname is generated from the Vercel **project name** — the project was renamed `lossless-slides-site` → `lossless-decks`, and the old subdomain now 404s — so renaming the project again means updating both files. Set `SITE_URL` to override it; sitemap and canonical URLs read from it. The GitHub repo is still `lossless-slides-site`; only the Vercel project was renamed.
 
 Every push, on any branch, becomes the production deployment. Vercel's own Git auto-deploy is off (`vercel.json`, `git.deploymentEnabled: false`) because it can only promote one branch; `.github/workflows/deploy-production.yml` is the single deploy path and needs the repo secrets `VERCEL_TOKEN`, `VERCEL_ORG_ID`, and `VERCEL_PROJECT_ID`.
 

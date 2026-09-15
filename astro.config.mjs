@@ -11,8 +11,10 @@ import sitemap from '@astrojs/sitemap'
 //   reminder Preference-for-Shortcuts-in-Config-to-Absolute-Paths)
 
 export default defineConfig({
-  // The Vercel deployment domain, until a custom one is chosen. @astrojs/sitemap
-  // and canonical URLs both read this; public/robots.txt names it separately.
+  // Tracks the Vercel PROJECT NAME, which generates the hostname: the project was
+  // renamed lossless-slides-site -> lossless-decks, and the old subdomain now 404s.
+  // Rename the project again and this must change with it (so must robots.txt).
+  // @astrojs/sitemap and canonical URLs both read this.
   site: process.env.SITE_URL ?? 'https://lossless-decks.vercel.app',
   output: 'server',
   adapter: vercel(),
