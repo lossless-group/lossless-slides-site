@@ -25,6 +25,7 @@ tags:
   - Creative-Generation
   - Whole-Deck-Variants
   - Iteration-Discipline
+type: Blueprints
 ---
 
 # Generate Whole Decks, and Regenerate Fresh

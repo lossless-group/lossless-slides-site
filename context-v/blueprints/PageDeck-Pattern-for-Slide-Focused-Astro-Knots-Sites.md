@@ -27,6 +27,7 @@ tags:
   - Vanilla-JS
   - Astro-Knots
   - Lossless-Brand
+type: Blueprints
 ---
 
 # PageDeck: A Pattern for Slide-Focused Astro Knots Sites

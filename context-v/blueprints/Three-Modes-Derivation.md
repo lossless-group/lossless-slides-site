@@ -23,6 +23,7 @@ date_authored_current_draft: 2026-05-11
 from: dididecks-ai
 from_path: context-v/blueprints/Three-Modes-Derivation.md
 date_copied: 2026-09-14
+type: Blueprints
 ---
 <!-- Copied from ai-labs/dididecks-ai/context-v/blueprints/Three-Modes-Derivation.md on 2026-09-14 as a worked example of deriving modes a brand never had. Kept verbatim (same site_uuid / hex_code) because it is the same document. The Lossless derivation for this site is its own doc. -->
 
