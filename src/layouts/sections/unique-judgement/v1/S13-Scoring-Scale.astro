@@ -1,0 +1,34 @@
+---
+import SlideFolio from '@components/deck/SlideFolio.astro';
+
+const scale = [
+  { score: 5, name: 'Exceptional', band: 'Top 5%' },
+  { score: 4, name: 'Above Average', band: 'Top 10-25%' },
+  { score: 3, name: 'Average', band: 'Top 50%' },
+  { score: 2, name: 'Below Average', band: 'Bottom 50%' },
+  { score: 1, name: 'Weak', band: 'Bottom 25%' },
+];
+---
+
+<section class="deck-slide" id="s13-scoring-scale" data-slot="scoring-scale">
+  <SlideFolio number={13} label="Scoring" />
+  <div class="deck-inner">
+    <p class="deck-eyebrow reveal-item">The Scoring Scale · Percentile Mapping</p>
+    <h2 class="deck-title mt-5 reveal-item" style="--delay: 90ms">Objective Assessment</h2>
+    <ol class="mt-8 flex flex-col">
+      {scale.map((row, i) => (
+        <li class="grid items-center gap-x-6 border-b border-border py-3 reveal-item grid-cols-[2.5rem_1fr_auto] sm:grid-cols-[2.5rem_8rem_1fr_auto] light:border-foreground/40" style={`--delay: ${180 + i * 90}ms`}>
+          <span class="deck-stat text-[1.75rem]">{row.score}</span>
+          <span class="hidden gap-1.5 sm:flex" aria-hidden="true">
+            {[1, 2, 3, 4, 5].map((dot) => (
+              <span class:list={['size-3 rounded-full', dot <= row.score ? 'bg-primary' : 'bg-border']}></span>
+            ))}
+          </span>
+          <span class="deck-lede text-foreground">{row.name}</span>
+          <span class="deck-label">{row.band}</span>
+        </li>
+      ))}
+    </ol>
+    <p class="deck-body mt-6 italic text-foreground reveal-item" style="--delay: 660ms">Calibrated across hundreds of evaluations</p>
+  </div>
+</section>

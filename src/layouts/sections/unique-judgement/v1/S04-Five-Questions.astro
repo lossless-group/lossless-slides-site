@@ -1,0 +1,28 @@
+---
+import SlideFolio from '@components/deck/SlideFolio.astro';
+
+const questions = [
+  { o: 'Origins', q: 'Why would anyone care?' },
+  { o: 'Opening', q: 'How big is this?' },
+  { o: 'Organization', q: 'Who is building it?' },
+  { o: 'Offering', q: 'What exactly is it?' },
+  { o: 'Opportunity', q: 'Is it worth it?' },
+];
+---
+
+<section class="deck-slide" id="s04-five-questions" data-slot="five-questions">
+  <SlideFolio number={4} label="The 12Ps" />
+  <div class="deck-inner">
+    <p class="deck-eyebrow reveal-item">The 12Ps Framework · Our Proprietary Evaluation System</p>
+    <h2 class="deck-title mt-5 reveal-item" style="--delay: 90ms">Five Questions That Matter</h2>
+    <ol class="mt-8 flex flex-col">
+      {questions.map((row, i) => (
+        <li class="grid items-baseline gap-x-6 border-b border-border py-3 reveal-item sm:grid-cols-[2.5rem_14rem_1fr] light:border-foreground/40" style={`--delay: ${180 + i * 90}ms`}>
+          <span class="font-mono text-sm tabular-nums text-muted-foreground">{String(i + 1).padStart(2, '0')}</span>
+          <span class="deck-lede font-semibold text-foreground">{row.o}</span>
+          <span class="deck-lede">{row.q}</span>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>

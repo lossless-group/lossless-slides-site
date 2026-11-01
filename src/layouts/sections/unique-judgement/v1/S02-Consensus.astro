@@ -1,0 +1,24 @@
+---
+import SlideFolio from '@components/deck/SlideFolio.astro';
+
+const sames = ['deal flow channels', 'evaluation criteria', 'herd mentality on hot sectors', 'FOMO-driven decisions'];
+---
+
+<section class="deck-slide" id="s02-consensus" data-slot="consensus">
+  <SlideFolio number={2} label="The problem" />
+  <div class="deck-inner">
+    <p class="deck-eyebrow reveal-item">The Problem with Consensus</p>
+    <h2 class="deck-title mt-5 reveal-item" style="--delay: 90ms">Most investors follow the same playbook</h2>
+    <ul class="mt-8 flex flex-col">
+      {sames.map((same, i) => (
+        <li class="flex items-baseline gap-5 border-b border-border py-3 reveal-item light:border-foreground/40" style={`--delay: ${180 + i * 100}ms`}>
+          <span class="deck-title gradient-text">Same</span>
+          <span class="deck-lede">{same}</span>
+        </li>
+      ))}
+    </ul>
+    <p class="deck-body mt-8 text-foreground reveal-item" style="--delay: 640ms">
+      <strong>Result:</strong> Compressed returns as everyone chases the same opportunities
+    </p>
+  </div>
+</section>

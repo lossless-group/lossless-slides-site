@@ -1,0 +1,48 @@
+---
+/**
+ * One of the 5Os: its question, its three Ps, and the line that sticks.
+ * Shared by the O slides so the framework reads as one instrument.
+ */
+import SlideFolio from '@components/deck/SlideFolio.astro';
+
+interface Props {
+  id: string;
+  number: number;
+  /** Position within the 5Os, 1 to 5. */
+  position: number;
+  name: string;
+  question: string;
+  kicker: string;
+  ps: { name: string; body: string }[];
+  note: string;
+}
+
+const { id, number, position, name, question, kicker, ps, note } = Astro.props;
+---
+
+<section class="deck-slide" id={id} data-slot={name.toLowerCase()}>
+  <SlideFolio number={number} label={name} />
+  <div class="deck-inner grid items-center gap-[var(--deck-gap)] lg:grid-cols-[1fr_1.25fr]">
+    <div>
+      <div class="flex gap-2 reveal-item" role="img" aria-label={`O ${position} of 5`}>
+        {[1, 2, 3, 4, 5].map((step) => (
+          <span class:list={['h-1.5 w-8', step === position ? 'bg-primary' : 'bg-border']}></span>
+        ))}
+      </div>
+      <p class="deck-eyebrow mt-6 reveal-item" style="--delay: 60ms">{name}</p>
+      <h2 class="deck-title mt-4 reveal-item" style="--delay: 120ms">{question}</h2>
+      <p class="deck-label mt-5 reveal-item" style="--delay: 180ms">{kicker}</p>
+    </div>
+    <div>
+      <dl class="flex flex-col">
+        {ps.map((p, i) => (
+          <div class="border-b border-border py-4 reveal-item light:border-foreground/40" style={`--delay: ${220 + i * 110}ms`}>
+            <dt class="deck-label text-primary vibrant:text-secondary">{p.name}</dt>
+            <dd class="deck-lede mt-2">{p.body}</dd>
+          </div>
+        ))}
+      </dl>
+      <p class="deck-body mt-6 italic text-foreground reveal-item" style="--delay: 600ms">{note}</p>
+    </div>
+  </div>
+</section>

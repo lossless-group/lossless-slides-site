@@ -1,0 +1,24 @@
+---
+import SlideFolio from '@components/deck/SlideFolio.astro';
+
+const pillars = [
+  { name: 'Open Innovation', body: 'Leveraging external networks to drive innovation and collaboration.' },
+  { name: 'Networked Capital', body: 'Building a network of loosely involved parties to support innovation and collaboration.' },
+];
+---
+
+<section class="deck-slide" id="s02-pillars" data-slot="pillars">
+  <SlideFolio number={2} label="Key pillars" />
+  <div class="deck-inner">
+    <h2 class="deck-title reveal-item">Key Pillars</h2>
+    <div class="mt-12 grid gap-[var(--deck-gap)] md:grid-cols-2">
+      {pillars.map((pillar, i) => (
+        <div class="deck-panel reveal-item" style={`--delay: ${120 + i * 160}ms`}>
+          <p class="deck-label text-primary vibrant:text-secondary">{String(i + 1).padStart(2, '0')}</p>
+          <h3 class="deck-title mt-4">{pillar.name}</h3>
+          <p class="deck-lede mt-5">{pillar.body}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

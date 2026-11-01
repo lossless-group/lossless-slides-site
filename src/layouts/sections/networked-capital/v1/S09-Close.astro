@@ -1,0 +1,19 @@
+---
+import SlideFolio from '@components/deck/SlideFolio.astro';
+---
+
+<section class="deck-slide" id="s09-close" data-slot="close">
+  <SlideFolio number={9} label="Close" />
+  <div class="deck-inner">
+    <p class="deck-eyebrow reveal-item">Thank you</p>
+    <h2 class="deck-title-xl mt-6 reveal-item" style="--delay: 90ms">
+      Networked <span class="gradient-text">Capital</span>
+    </h2>
+    <hr class="deck-rule mt-10 w-28 reveal-item" style="--delay: 180ms" />
+    <p class="deck-lede mt-8 reveal-item" style="--delay: 260ms">Michael Staton · The Lossless Group · Made for Hypernova Capital</p>
+    <div class="mt-4 flex flex-wrap gap-6 reveal-item" style="--delay: 320ms">
+      <a href="/presentations/unique-judgement" class="deck-label underline decoration-border underline-offset-4 hover:text-foreground">Next: Unique Judgement</a>
+      <a href="https://www.lossless.group" class="deck-label underline decoration-border underline-offset-4 hover:text-foreground">lossless.group</a>
+    </div>
+  </div>
+</section>

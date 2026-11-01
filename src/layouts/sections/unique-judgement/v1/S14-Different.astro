@@ -1,0 +1,25 @@
+---
+import SlideFolio from '@components/deck/SlideFolio.astro';
+
+const advantages = [
+  { name: 'Networked advisors', body: 'Mission Catalysts scaffold judgement' },
+  { name: 'Codified frameworks', body: '12Ps and 12-Dimension systems' },
+  { name: 'Disciplined process', body: 'Systematic, not reactive' },
+];
+---
+
+<section class="deck-slide" id="s14-different" data-slot="different">
+  <SlideFolio number={14} label="Advantages" />
+  <div class="deck-inner">
+    <p class="deck-eyebrow reveal-item">Unique Judgement Advantages</p>
+    <h2 class="deck-title mt-5 reveal-item" style="--delay: 90ms">What Makes Us Different</h2>
+    <div class="mt-10 grid gap-[var(--deck-gap)] md:grid-cols-3">
+      {advantages.map((item, i) => (
+        <div class="deck-panel reveal-item" style={`--delay: ${180 + i * 130}ms`}>
+          <p class="deck-lede font-semibold text-foreground">{item.name}</p>
+          <p class="deck-body mt-3 text-muted-foreground">{item.body}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

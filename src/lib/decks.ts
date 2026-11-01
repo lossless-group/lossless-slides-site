@@ -46,6 +46,38 @@ export const DECKS: Deck[] = [
       },
     ],
   },
+  {
+    slug: 'networked-capital',
+    title: 'Networked Capital, a Primer',
+    subtitle: 'The advantages of Open Innovation in Finance',
+    summary:
+      'Why more value comes from exchange across organizations than from small teams in isolation. Made for Hypernova Capital.',
+    status: 'Draft',
+    versions: [
+      {
+        key: 'v1',
+        href: '/presentations/networked-capital',
+        label: 'v1',
+        voice: 'Primer',
+      },
+    ],
+  },
+  {
+    slug: 'unique-judgement',
+    title: 'Unique Judgement',
+    subtitle: 'In Evaluating Opportunities',
+    summary:
+      'Why we see opportunities differently: the 12Ps, Mission Catalysts, and codified systems for repeatable judgement. Made for Hypernova Capital.',
+    status: 'Draft',
+    versions: [
+      {
+        key: 'v1',
+        href: '/presentations/unique-judgement',
+        label: 'v1',
+        voice: 'Scorecard',
+      },
+    ],
+  },
 ];
 
 export interface DeckContext {

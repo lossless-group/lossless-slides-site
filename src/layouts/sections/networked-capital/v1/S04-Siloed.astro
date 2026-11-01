@@ -1,0 +1,27 @@
+---
+import SlideFolio from '@components/deck/SlideFolio.astro';
+---
+
+<section class="deck-slide" id="s04-siloed" data-slot="siloed">
+  <SlideFolio number={4} label="Silos" />
+  <div class="deck-inner">
+    <p class="deck-eyebrow reveal-item">Funds as instruments</p>
+    <h2 class="deck-title mt-6 max-w-[22ch] reveal-item" style="--delay: 90ms">
+      Impact, Transformation, and Returns are hamstrung by a very <span class="gradient-text">siloed reality.</span>
+    </h2>
+    <div class="mt-10 grid gap-[var(--deck-gap)] md:grid-cols-2">
+      <div class="deck-panel reveal-item" style="--delay: 220ms">
+        <p class="deck-body text-foreground">
+          Fund managers only manage whatever kind of instrument or vehicle that they manage, they almost never have more than one fund structure instrument.
+        </p>
+        <p class="deck-body mt-4 text-muted-foreground">Why? It's the way the industry grew up. It has always been. No other reason.</p>
+      </div>
+      <div class="deck-panel reveal-item" style="--delay: 340ms">
+        <p class="deck-body text-foreground">
+          We believe funds are instruments of change. And we need a symphony of instruments to create the change we need.
+        </p>
+        <p class="deck-body mt-4 text-muted-foreground">No single instrument can play every note.</p>
+      </div>
+    </div>
+  </div>
+</section>

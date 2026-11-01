@@ -1,0 +1,25 @@
+---
+import SlideFolio from '@components/deck/SlideFolio.astro';
+---
+
+<section class="deck-slide" id="s06-conundrums" data-slot="conundrums">
+  <SlideFolio number={6} label="Conundrums" />
+  <div class="deck-inner">
+    <h2 class="deck-title reveal-item">The “Fund of Funds” model has conundrums.</h2>
+    <div class="mt-10 grid gap-[var(--deck-gap)] md:grid-cols-2">
+      <div class="deck-panel reveal-item" style="--delay: 140ms">
+        <p class="deck-label text-primary vibrant:text-secondary">Plays to averages</p>
+        <p class="deck-lede mt-4">A bet on “the average.”</p>
+        <p class="deck-body mt-4 text-muted-foreground">
+          Venture is a business of taking bold bets on potential outliers, and outliers are what drives returns.
+        </p>
+      </div>
+      <div class="deck-panel reveal-item" style="--delay: 280ms">
+        <p class="deck-label text-primary vibrant:text-secondary">Fees on fees</p>
+        <p class="deck-body mt-4 font-mono text-muted-foreground">(2% + 20%) + (1% + 10%)</p>
+        <p class="deck-stat mt-3">3% <span class="deck-lede">fees</span> &amp; 30% <span class="deck-lede">carry</span></p>
+        <p class="deck-body mt-4 text-muted-foreground">Fees on Fees, Carry on Carry take a huge chunk off a decent return.</p>
+      </div>
+    </div>
+  </div>
+</section>

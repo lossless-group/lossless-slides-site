@@ -1,0 +1,59 @@
+---
+import SlideFolio from '@components/deck/SlideFolio.astro';
+
+const groups = [
+  {
+    name: 'Founder and Deal Dynamics',
+    items: [
+      ['Empathy', 'Insight-driven founder relationships'],
+      ['Theory of Market', 'Differentiated market thesis'],
+      ['Ecosystem Imprint', 'Memorable presence'],
+      ['Hustle', 'Super-human omnipresence'],
+    ],
+  },
+  {
+    name: 'Execution and Style',
+    items: [
+      ['Pull Force', 'Becoming the go-to investor'],
+      ['Pounce', 'Moving quickly with built-in diligence'],
+      ['Integrity', 'Waver-less in difficult moments'],
+      ['Grip', 'Maintaining access in growth rounds'],
+    ],
+    note: 'The best GPs are pounce-ready',
+  },
+  {
+    name: 'Portfolio Discipline',
+    items: [
+      ['Judgement', 'Codified selection systems'],
+      ['Discipline', 'Focus despite distractions'],
+      ['Positioning', 'Differentiated market position'],
+      ['Prudence', 'Rational follow-on decisions'],
+    ],
+    note: 'Resisting FOMO is a superpower',
+  },
+];
+---
+
+<section class="deck-slide" id="s12-evaluating-gps" data-slot="evaluating-gps">
+  <SlideFolio number={12} label="Evaluating GPs" />
+  <div class="deck-inner">
+    <p class="deck-eyebrow reveal-item">Evaluating GPs</p>
+    <h2 class="deck-title mt-4 reveal-item" style="--delay: 90ms">Our 12-Dimension Framework</h2>
+    <div class="mt-7 grid gap-[var(--deck-gap)] md:grid-cols-3">
+      {groups.map((group, g) => (
+        <div class="deck-panel reveal-item" style={`--delay: ${180 + g * 130}ms`}>
+          <p class="deck-label text-primary vibrant:text-secondary">{group.name}</p>
+          <dl class="mt-3 flex flex-col gap-2.5">
+            {group.items.map(([name, body]) => (
+              <div>
+                <dt class="deck-small font-semibold text-foreground">{name}</dt>
+                <dd class="deck-small text-muted-foreground">{body}</dd>
+              </div>
+            ))}
+          </dl>
+          {group.note && <p class="deck-small mt-3 italic text-foreground">{group.note}</p>}
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

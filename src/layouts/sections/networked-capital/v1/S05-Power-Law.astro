@@ -1,0 +1,33 @@
+---
+import SlideFolio from '@components/deck/SlideFolio.astro';
+
+// Schematic shapes, not fund data. The slide says so on its face.
+const bell = 'M10 150 C 60 150, 70 40, 100 40 S 140 150, 190 150';
+const power = 'M10 20 C 22 110, 50 142, 190 150';
+---
+
+<section class="deck-slide" id="s05-power-law" data-slot="power-law">
+  <SlideFolio number={5} label="Power law" />
+  <div class="deck-inner grid items-center gap-[var(--deck-gap)] lg:grid-cols-[1.2fr_1fr]">
+    <div>
+      <h2 class="deck-title reveal-item">
+        It's not a normal distribution, it's a <span class="gradient-text">power law</span> distribution.
+      </h2>
+      <p class="deck-body mt-6 text-muted-foreground reveal-item" style="--delay: 140ms">
+        For nearly two decades, data from organizations like Cambridge Associates and Pitchbook have shown that Venture Capital can dramatically outperform the market.
+      </p>
+      <p class="deck-body mt-4 text-foreground reveal-item" style="--delay: 240ms">
+        Allocating to venture broadly speaking will not outperform the market. Allocating to specific funds that generate those power-law, outsized returns will outperform the market.
+      </p>
+      <p class="deck-lede mt-6 reveal-item" style="--delay: 340ms">Not to “average out,” but to “play to the best.”</p>
+    </div>
+    <figure class="reveal-item" style="--delay: 300ms">
+      <svg viewBox="0 0 200 165" class="w-full" role="img" aria-label="Schematic comparing a symmetric bell curve with a steep power-law curve that has a few extreme outcomes">
+        <line x1="10" y1="150" x2="190" y2="150" stroke="var(--border)" stroke-width="1" />
+        <path d={bell} fill="none" stroke="var(--muted-foreground)" stroke-width="1.5" stroke-dasharray="4 4" />
+        <path d={power} fill="none" stroke="var(--primary)" stroke-width="2.5" />
+      </svg>
+      <figcaption class="deck-small mt-3 text-muted-foreground">Schematic shapes, not fund data. Dashed: normal. Solid: power law.</figcaption>
+    </figure>
+  </div>
+</section>

@@ -1,0 +1,36 @@
+---
+import SlideFolio from '@components/deck/SlideFolio.astro';
+
+const moves = [
+  { name: 'Curate & Filter', body: 'We handpick alpha-generating fund managers.' },
+  { name: 'Build Foresight Engines', body: 'We unite Hypernova’s investors with portfolio funds to foster collaboration.' },
+  { name: 'Structure Aligned Opportunities', body: 'We don’t just invest in funds, we double down on their best performers.' },
+];
+---
+
+<section class="deck-slide" id="s07-hypernova" data-slot="hypernova">
+  <SlideFolio number={7} label="Hypernova" />
+  <div class="deck-inner">
+    <p class="deck-eyebrow reveal-item">Made for Hypernova Capital</p>
+    <h2 class="deck-title mt-6 reveal-item" style="--delay: 90ms">
+      A <span class="gradient-text">Fund-with-Funds</span> angle on Venture Capital
+    </h2>
+    <ul class="mt-8 flex flex-col gap-2">
+      <li class="deck-lede reveal-item" style="--delay: 200ms">Moderate LP Commitments to the next generation of great fund managers.</li>
+      <li class="deck-lede reveal-item" style="--delay: 280ms">Co-Investments and Direct Investments into high-potential, early stage companies.</li>
+    </ul>
+    <div class="mt-10 grid gap-[var(--deck-gap)] md:grid-cols-3">
+      {moves.map((move, i) => (
+        <div class="deck-panel reveal-item" style={`--delay: ${380 + i * 110}ms`}>
+          <p class="deck-label text-primary vibrant:text-secondary">{move.name}</p>
+          <p class="deck-body mt-3 text-foreground">{move.body}</p>
+        </div>
+      ))}
+    </div>
+    <a
+      href="https://hypernova.capital"
+      class="deck-label mt-8 inline-block w-fit underline decoration-border underline-offset-4 hover:text-foreground reveal-item"
+      style="--delay: 720ms"
+    >hypernova.capital</a>
+  </div>
+</section>

@@ -1,0 +1,27 @@
+---
+import SlideFolio from '@components/deck/SlideFolio.astro';
+
+const steps = [
+  { lead: 'Systematic screening', rest: 'with clear criteria' },
+  { lead: 'Consistent application', rest: 'across all opportunities' },
+  { lead: 'Documented rationale', rest: 'for every pass' },
+  { lead: 'Repeatable judgement', rest: 'that scales' },
+];
+---
+
+<section class="deck-slide" id="s11-at-scale" data-slot="at-scale">
+  <SlideFolio number={11} label="At scale" />
+  <div class="deck-inner">
+    <p class="deck-eyebrow reveal-item">Judgement at Scale</p>
+    <h2 class="deck-title mt-5 reveal-item" style="--delay: 90ms">Codified Systems, Not Ad Hoc Decisions</h2>
+    <ol class="mt-8 grid gap-x-[var(--deck-gap)] sm:grid-cols-2">
+      {steps.map((step, i) => (
+        <li class="border-b border-border py-4 reveal-item light:border-foreground/40" style={`--delay: ${180 + i * 100}ms`}>
+          <p class="deck-lede font-semibold text-foreground">{step.lead}</p>
+          <p class="deck-body mt-1 text-muted-foreground">{step.rest}</p>
+        </li>
+      ))}
+    </ol>
+    <p class="deck-body mt-8 italic text-foreground reveal-item" style="--delay: 640ms">Firms awash in opportunities need deliberate systems</p>
+  </div>
+</section>

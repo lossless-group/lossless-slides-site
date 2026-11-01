@@ -1,0 +1,25 @@
+---
+import SlideFolio from '@components/deck/SlideFolio.astro';
+
+const takeaways = [
+  { lead: 'Unique judgement', rest: 'comes from codified systems, not gut instinct' },
+  { lead: 'Networked Capital', rest: 'multiplies our insight through Mission Catalysts' },
+  { lead: '12Ps Framework', rest: 'ensures comprehensive evaluation' },
+  { lead: 'Discipline', rest: 'means saying no to most opportunities' },
+];
+---
+
+<section class="deck-slide" id="s16-takeaways" data-slot="takeaways">
+  <SlideFolio number={16} label="Takeaways" />
+  <div class="deck-inner">
+    <h2 class="deck-title reveal-item">Key Takeaways</h2>
+    <ol class="mt-8 flex flex-col">
+      {takeaways.map((item, i) => (
+        <li class="flex items-baseline gap-[var(--deck-gap)] border-b border-border py-4 reveal-item light:border-foreground/40" style={`--delay: ${100 + i * 110}ms`}>
+          <span class="font-mono text-sm tabular-nums text-muted-foreground">{String(i + 1).padStart(2, '0')}</span>
+          <p class="deck-lede"><strong class="text-foreground">{item.lead}</strong> {item.rest}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>

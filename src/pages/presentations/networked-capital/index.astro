@@ -1,0 +1,43 @@
+---
+/**
+ * Deck v1 · "Primer" voice. Generated in one pass from
+ * src/content/presentations/networked-capital/outline.md.
+ * Slides live in src/layouts/sections/networked-capital/v1/.
+ * A new version gets its own folder and page, never an edit of this one.
+ */
+import DeckLayout from '@layouts/DeckLayout.astro';
+import PageDeck from '@layouts/PageDeck.astro';
+import DeckChrome from '@components/deck/DeckChrome.astro';
+import { getDeckContext } from '@lib/decks';
+
+import S01Cover from '@layouts/sections/networked-capital/v1/S01-Cover.astro';
+import S02Pillars from '@layouts/sections/networked-capital/v1/S02-Pillars.astro';
+import S03Belief from '@layouts/sections/networked-capital/v1/S03-Belief.astro';
+import S04Siloed from '@layouts/sections/networked-capital/v1/S04-Siloed.astro';
+import S05PowerLaw from '@layouts/sections/networked-capital/v1/S05-Power-Law.astro';
+import S06Conundrums from '@layouts/sections/networked-capital/v1/S06-Conundrums.astro';
+import S07Hypernova from '@layouts/sections/networked-capital/v1/S07-Hypernova.astro';
+import S08Information from '@layouts/sections/networked-capital/v1/S08-Information.astro';
+import S09Close from '@layouts/sections/networked-capital/v1/S09-Close.astro';
+
+export const prerender = true;
+
+const context = getDeckContext(Astro.url.pathname);
+if (!context) throw new Error(`No deck registered for ${Astro.url.pathname}`);
+const { deck } = context;
+---
+
+<DeckLayout title={`${deck.title} · ${deck.subtitle}`} description={deck.summary} noindex>
+  <PageDeck label={deck.title}>
+    <S01Cover />
+    <S02Pillars />
+    <S03Belief />
+    <S04Siloed />
+    <S05PowerLaw />
+    <S06Conundrums />
+    <S07Hypernova />
+    <S08Information />
+    <S09Close />
+  </PageDeck>
+  <DeckChrome context={context} />
+</DeckLayout>

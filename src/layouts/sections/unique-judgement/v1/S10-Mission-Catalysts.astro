@@ -1,0 +1,30 @@
+---
+import SlideFolio from '@components/deck/SlideFolio.astro';
+
+const roles = [
+  { name: 'Technical Advisors', body: 'Validate technology claims' },
+  { name: 'Industry Veterans', body: 'Assess market dynamics' },
+  { name: 'Operator Advisors', body: 'Evaluate execution capability' },
+  { name: 'Policy Experts', body: 'Navigate regulatory landscape' },
+];
+---
+
+<section class="deck-slide" id="s10-mission-catalysts" data-slot="mission-catalysts">
+  <SlideFolio number={10} label="Mission Catalysts" />
+  <div class="deck-inner">
+    <p class="deck-eyebrow reveal-item">The Advantage of Networked Capital</p>
+    <h2 class="deck-title mt-5 reveal-item" style="--delay: 90ms">Mission Catalysts</h2>
+    <p class="deck-lede mt-5 max-w-[46rem] reveal-item" style="--delay: 170ms">
+      Our Mission Catalysts are advisors who assemble a team of experts to <strong class="text-foreground">scaffold opportunity judgement</strong> for our investment teams.
+    </p>
+    <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {roles.map((role, i) => (
+        <div class="deck-card fx-surface reveal-item" style={`--delay: ${260 + i * 100}ms`}>
+          <p class="deck-label text-primary vibrant:text-secondary">{role.name}</p>
+          <p class="deck-body mt-3 text-foreground">{role.body}</p>
+        </div>
+      ))}
+    </div>
+    <p class="deck-body mt-6 italic text-foreground reveal-item" style="--delay: 680ms">Each deal gets a custom expert panel</p>
+  </div>
+</section>

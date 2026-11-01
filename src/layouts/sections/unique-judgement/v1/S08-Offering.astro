@@ -1,0 +1,35 @@
+---
+import SlideFolio from '@components/deck/SlideFolio.astro';
+
+// Offering has no Ps of its own: it borrows one from each of three other Os.
+const borrowed = [
+  { p: 'Proposition', from: 'Origins' },
+  { p: 'Positioning', from: 'Opening' },
+  { p: 'Product', from: 'Organization' },
+];
+---
+
+<section class="deck-slide" id="s08-offering" data-slot="offering">
+  <SlideFolio number={8} label="Offering" />
+  <div class="deck-inner">
+    <div class="flex gap-2 reveal-item" role="img" aria-label="O 4 of 5">
+      {[1, 2, 3, 4, 5].map((step) => (
+        <span class:list={['h-1.5 w-8', step === 4 ? 'bg-primary' : 'bg-border']}></span>
+      ))}
+    </div>
+    <p class="deck-eyebrow mt-6 reveal-item" style="--delay: 60ms">Offering</p>
+    <h2 class="deck-title mt-4 reveal-item" style="--delay: 120ms">What Exactly Is It?</h2>
+    <p class="deck-lede mt-5 reveal-item" style="--delay: 180ms">How coherently the three line up.</p>
+    <div class="mt-10 grid items-center gap-4 md:grid-cols-[1fr_auto_1fr_auto_1fr]">
+      {borrowed.map((item, i) => (
+        <>
+          {i > 0 && <span class="deck-title text-center text-muted-foreground reveal-item" style={`--delay: ${240 + i * 110}ms`} aria-hidden="true">+</span>}
+          <div class="deck-panel reveal-item" style={`--delay: ${240 + i * 110}ms`}>
+            <p class="deck-lede font-semibold text-foreground">{item.p}</p>
+            <p class="deck-label mt-2">from {item.from}</p>
+          </div>
+        </>
+      ))}
+    </div>
+  </div>
+</section>
